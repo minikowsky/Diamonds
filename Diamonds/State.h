@@ -1,6 +1,8 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 #include <stack>
+#include <iostream>
+#include <map>
 class State;
 
 class StateData
@@ -20,15 +22,21 @@ public:
 	State(StateData* state_data);
 	virtual ~State();
 
+	void updateMouseposition();
 	virtual void update() = 0;
-	virtual void render() = 0;
-
+	virtual void render(sf::RenderTarget* target = NULL) = 0;
+	const bool& getQuit() const;
+	void endState();
 
 protected:
 	StateData* stateData;
 	sf::RenderWindow* window;
 	std::stack<State*>* states;
 	sf::Font* font;
+	bool quit;
+
+	
+	sf::Vector2i mousePos;
 
 };
 

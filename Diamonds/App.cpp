@@ -11,21 +11,9 @@ App::App()
 App::~App()
 {
 	delete this->window;
+	delete this->font;
 }
 
-void App::start()
-{
-	appLoop();
-}
-
-void App::appLoop()
-{
-	while (this->window->isOpen())
-	{
-		this->update();
-		this->render();
-	}
-}
 
 void App::initFields()
 {
@@ -56,6 +44,19 @@ void App::initStates()
 	this->states.push(new MenuState(&this->stateData));
 }
 
+void App::start()
+{
+	appLoop();
+}
+void App::appLoop()
+{
+	while (this->window->isOpen())
+	{
+		this->update();
+		this->render();
+	}
+}
+
 void App::update()
 {
 	while (this->window->pollEvent(this->evnt))
@@ -63,12 +64,34 @@ void App::update()
 		if (this->evnt.type == sf::Event::Closed)
 			this->window->close();
 	}
+
+	if (!this->states.empty())
+	{
+		if (this->window->hasFocus())
+		{
+			this->states.top()->update();
+
+			if (this->states.top()->getQuit())
+			{
+				this->states.top()->endState();
+				delete this->states.top();
+				this->states.pop();
+			}
+		}
+	}
+	else
+	{
+		std::cout << "the End";
+		this->window->close();
+	}
 }
 
 void App::render()
 {
 	this->window->clear();
-	//if (!this->initStates.empty())
-	//	this->initStates.top()->render();
+
+	if (!this->states.empty())
+		this->states.top()->render();
+
 	this->window->display();
 }
