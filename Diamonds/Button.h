@@ -1,7 +1,6 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 #include <iostream>
-#include <string>
 enum button_states{btn_IDLE=0,btn_HOVER,btn_ACTIVE};
 class Button
 {
@@ -17,7 +16,7 @@ public:
 	const short unsigned& getId() const;
 
 	void update(const sf::Vector2i& mousePos);
-	void render(sf::RenderWindow& target);
+	void render(sf::RenderTarget& target);
 private:
 
 	short unsigned buttonState;

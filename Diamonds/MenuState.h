@@ -13,8 +13,8 @@ public:
     
     //methods
     void update();
-    void render(sf::RenderWindow& target);
-    void renderBtns(sf::RenderWindow& target);
+    void render(sf::RenderTarget* target);
+    void renderBtns(sf::RenderTarget& target);
 private:
     //fields
     sf::RectangleShape background;

@@ -56,7 +56,7 @@ void Button::update(const sf::Vector2i& mousePos)
 	//std::cout << mousePos.x << " " << mousePos.y << "\n";
 	//Idle
 	this->buttonState = btn_IDLE;
-	
+	//std::cout << shape.getGlobalBounds().height<<" "<< shape.getGlobalBounds().width<<" "<< shape.getGlobalBounds().left<<" "<< shape.getGlobalBounds().top<<"\n";
 	//Hover
 	if (this->shape.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
 	{
@@ -89,10 +89,8 @@ void Button::update(const sf::Vector2i& mousePos)
 	}
 }
 
-void Button::render(sf::RenderWindow& target)
+void Button::render(sf::RenderTarget& target)
 {
-	
 	target.draw(this->shape);
 	target.draw(this->text);
-	
 }

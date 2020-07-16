@@ -25,7 +25,7 @@ private:
 	void render();
 	
 	//fields
-	sf::RenderWindow window;
+	sf::RenderWindow *window;
 	std::stack<State*> states;
 	sf::Event evnt;
 	sf::Font* font;
