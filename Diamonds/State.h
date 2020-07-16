@@ -24,7 +24,7 @@ public:
 
 	void updateMouseposition();
 	virtual void update() = 0;
-	virtual void render(sf::RenderTarget* target = NULL) = 0;
+	virtual void render(sf::RenderWindow& target) = 0;
 	const bool& getQuit() const;
 	void endState();
 

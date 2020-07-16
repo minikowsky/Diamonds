@@ -70,23 +70,21 @@ void MenuState::update()
 }
 
 
-void MenuState::render(sf::RenderTarget* target)
+void MenuState::render(sf::RenderWindow& target)
 {
-	if (!target)
-		target = this->window;
-	target->draw(this->background);
-	this->renderBtns(*target);
+	//if (!target)
+	//	target = this->window;
+
+	target.draw(this->background);
+
+	this->renderBtns(target);
 
 
-	sf::RectangleShape sh;
-	sh.setPosition(1, 1);
-	sh.setSize(sf::Vector2f(20, 20));
-	sh.setFillColor(sf::Color::White);
-	target->draw(sh);
+	
 
 }
 
-void MenuState::renderBtns(sf::RenderTarget& target)
+void MenuState::renderBtns(sf::RenderWindow& target)
 {
 	for (auto& it : this->menuButtons)
 	{

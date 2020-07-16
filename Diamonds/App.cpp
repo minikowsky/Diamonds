@@ -1,23 +1,24 @@
 #include "App.h"
 
 App::App()
+	:window(sf::VideoMode(800, 800), "Diamonds", sf::Style::Close | sf::Style::Titlebar)
 {
 	this->initFields();
-	this->initWindow();
+	//this->initWindow();
 	this->initStateData();
 	this->initStates();
 }
 
 App::~App()
 {
-	delete this->window;
+	//delete this->window;
 	delete this->font;
 }
 
 
 void App::initFields()
 {
-	this->window = NULL;
+	//this->window = NULL;
 
 	this->font = new sf::Font(); //Default Font for all the Buttons
 	if (!font->loadFromFile("Font/arial.ttf"))
@@ -28,14 +29,14 @@ void App::initFields()
 
 void App::initWindow()
 {
-	this->window = new sf::RenderWindow(sf::VideoMode(800, 800), "Diamonds", sf::Style::Close | sf::Style::Titlebar);
+	//this->window = new sf::RenderWindow(sf::VideoMode(800, 800), "Diamonds", sf::Style::Close | sf::Style::Titlebar);
 	//icon.loadFromFile();
 	//this->window->setIcon(32, 32, icon.getPixelsPtr());
 }
 
 void App::initStateData()
 {
-	this->stateData.window = this->window;
+	//this->stateData.window = this->window;
 	this->stateData.states = &this->states;
 	this->stateData.font = this->font;
 }
@@ -50,7 +51,7 @@ void App::start()
 }
 void App::appLoop()
 {
-	while (this->window->isOpen())
+	while (this->window.isOpen())
 	{
 		this->update();
 		this->render();
@@ -59,15 +60,15 @@ void App::appLoop()
 
 void App::update()
 {
-	while (this->window->pollEvent(this->evnt))
+	while (this->window.pollEvent(this->evnt))
 	{
 		if (this->evnt.type == sf::Event::Closed)
-			this->window->close();
+			this->window.close();
 	}
 
 	if (!this->states.empty())
 	{
-		if (this->window->hasFocus())
+		if (this->window.hasFocus())
 		{
 			this->states.top()->update();
 
@@ -82,16 +83,16 @@ void App::update()
 	else
 	{
 		std::cout << "the End";
-		this->window->close();
+		this->window.close();
 	}
 }
 
 void App::render()
 {
-	this->window->clear();
+	this->window.clear();
 
 	if (!this->states.empty())
-		this->states.top()->render();
+		this->states.top()->render(this->window);
 
-	this->window->display();
+	this->window.display();
 }
