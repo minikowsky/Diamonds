@@ -12,7 +12,6 @@ public:
 
 	sf::RenderWindow* window;
 	std::stack<State*>* states;
-	sf::Font* font;
 };
 
 
@@ -32,7 +31,6 @@ protected:
 	StateData* stateData;
 	sf::RenderWindow* window;
 	std::stack<State*>* states;
-	sf::Font* font;
 	bool quit;
 
 	

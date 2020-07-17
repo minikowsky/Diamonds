@@ -18,12 +18,6 @@ App::~App()
 void App::initFields()
 {
 	this->window = NULL;
-
-	this->font = new sf::Font(); //Default Font for all the Buttons
-	if (!font->loadFromFile("Font/arial.ttf"))
-	{
-		std::cout << " error opening font file " << std::endl;
-	}
 }
 
 void App::initWindow()
@@ -37,7 +31,6 @@ void App::initStateData()
 {
 	this->stateData.window = this->window;
 	this->stateData.states = &this->states;
-	this->stateData.font = this->font;
 }
 void App::initStates()
 {

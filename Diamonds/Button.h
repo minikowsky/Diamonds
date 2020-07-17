@@ -1,6 +1,7 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 #include <iostream>
+#include <map>
 enum button_states{btn_IDLE=0,btn_HOVER,btn_ACTIVE};
 class Button
 {
@@ -22,7 +23,6 @@ private:
 	short unsigned buttonState;
 	short unsigned id;
 	sf::RectangleShape shape;
-	sf::Font* font;
 	sf::Text text;
 
 	sf::Color textIdleColor;

@@ -18,10 +18,11 @@ MenuState::~MenuState()
 
 void MenuState::initGui()
 {
+	
 	//Background
 	this->background.setSize(static_cast<sf::Vector2f>(window->getSize()));
 	//std::cout << window->getSize().x << window->getSize().y;
-	this->background.setFillColor(sf::Color::Green);
+	this->background.setFillColor(sf::Color::White);
 	//Buttons
 	this->menuButtons["GAME_STATE"] = new Button(sf::Vector2f(300,100), sf::Vector2f(100.f, 50.f),&this->font,"New Game",30,
 		sf::Color(200, 200, 200, 200), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
@@ -39,7 +40,10 @@ void MenuState::initGui()
 
 void MenuState::initFields()
 {
-	//todo:
+	if (!this->font.loadFromFile("Font/arial.ttf"))
+	{
+		std::cout << " error opening font file " << std::endl;
+	}
 }
 
 void MenuState::update()
@@ -74,15 +78,11 @@ void MenuState::render(sf::RenderTarget* target)
 {
 	if (!target)
 		target = this->window;
+	//this->background.setFillColor(sf::Color::White);
 	target->draw(this->background);
 	this->renderBtns(*target);
 
-
-	sf::RectangleShape sh;
-	sh.setPosition(1, 1);
-	sh.setSize(sf::Vector2f(20, 20));
-	sh.setFillColor(sf::Color::White);
-	target->draw(sh);
+	
 
 }
 

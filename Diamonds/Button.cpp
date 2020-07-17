@@ -4,14 +4,11 @@ Button::Button(sf::Vector2f btnPosition, sf::Vector2f btnSize, sf::Font* font, s
 {
 	this->buttonState = btn_IDLE;
 	this->id = id;
-	float x = btnPosition.x;
-	float y = btnPosition.y;
-	this->shape.setPosition(x,y);
+	this->shape.setPosition(btnPosition);
 	this->shape.setSize(btnSize);
 	this->shape.setFillColor(idle_color);
 
-	this->font = font;
-	this->text.setFont(*this->font);
+	this->text.setFont(*font);
 	this->text.setString(text);
 	this->text.setFillColor(text_idle_color);
 	this->text.setCharacterSize(char_size);
@@ -27,6 +24,11 @@ Button::Button(sf::Vector2f btnPosition, sf::Vector2f btnSize, sf::Font* font, s
 	this->idleColor = idle_color;
 	this->hoverColor = hover_color;
 	this->activeColor = active_color;
+	/*
+	this->idleColor = sf::Color(70, 70, 70, 0); 
+	this->hoverColor = sf::Color(150, 150, 150, 0);
+	this->activeColor = sf::Color(20, 20, 20, 0);*/
+
 }
 
 Button::~Button()
@@ -93,4 +95,5 @@ void Button::render(sf::RenderTarget& target)
 {
 	target.draw(this->shape);
 	target.draw(this->text);
+	
 }
