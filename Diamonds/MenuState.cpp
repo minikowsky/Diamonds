@@ -21,21 +21,21 @@ void MenuState::initGui()
 	
 	//Background
 	this->background.setSize(static_cast<sf::Vector2f>(window->getSize()));
-	//std::cout << window->getSize().x << window->getSize().y;
-	this->background.setFillColor(sf::Color::White);
+	this->background.setFillColor(sf::Color(90,90,90));
+	//this->background.setFillColor(sf::Color(25, 163, 255));
 	//Buttons
-	this->menuButtons["GAME_STATE"] = new Button(sf::Vector2f(300,100), sf::Vector2f(100.f, 50.f),&this->font,"New Game",30,
+	this->menuButtons["GAME_STATE"] = new Button(sf::Vector2f(150.f,150.f), sf::Vector2f(200.f, 50.f),&this->font,"New Game",30,
 		sf::Color(200, 200, 200, 200), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
-		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));
+		sf::Color(70, 70, 70, 150), sf::Color(150, 150, 150, 150), sf::Color(20, 20, 20, 150),30.f);
 
-	this->menuButtons["HOF_STATE"] = new Button(sf::Vector2f(300, 200), sf::Vector2f(100, 50), &this->font, "Hall Of Fame", 30,
+	this->menuButtons["SCORES_STATE"] = new Button(sf::Vector2f(150.f, 250.f), sf::Vector2f(200.f, 50.f), &this->font, "Scores", 30,
 		sf::Color(200, 200, 200, 200), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
-		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));
+		sf::Color(70, 70, 70, 150), sf::Color(150, 150, 150, 150), sf::Color(20, 20, 20, 150),50.f);
 
 
-	this->menuButtons["EXIT_STATE"] = new Button(sf::Vector2f(300, 300), sf::Vector2f(100, 50), &this->font, "Exit", 30,
+	this->menuButtons["EXIT_STATE"] = new Button(sf::Vector2f(150.f, 350.f), sf::Vector2f(200.f, 50.f), &this->font, "Exit", 30,
 		sf::Color(200, 200, 200, 200), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
-		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));
+		sf::Color(70, 70, 70, 150), sf::Color(150, 150, 150, 150), sf::Color(20, 20, 20, 150),70.f);
 }
 
 void MenuState::initFields()
@@ -60,9 +60,9 @@ void MenuState::update()
 		//this->states->push(new GameState(this->stateData));
 	}
 	//Hall of fame
-	if (this->menuButtons["HOF_STATE"]->isPressed())
+	if (this->menuButtons["SCORES_STATE"]->isPressed())
 	{
-		std::cout << "Hall of fame!\n";
+		std::cout << "Scores!\n";
 		//this->states->push(new GameState(this->stateData));
 	}
 	//Exit
@@ -93,6 +93,7 @@ void MenuState::renderBtns(sf::RenderTarget& target)
 		it.second->render(target);
 
 	}
+	
 }
 
 

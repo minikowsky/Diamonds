@@ -22,7 +22,7 @@ void App::initFields()
 
 void App::initWindow()
 {
-	this->window = new sf::RenderWindow(sf::VideoMode(800, 800), "Diamonds", sf::Style::Close | sf::Style::Titlebar);
+	this->window = new sf::RenderWindow(sf::VideoMode(500, 575), "Diamonds", sf::Style::Close | sf::Style::Titlebar);
 	//icon.loadFromFile();
 	//this->window->setIcon(32, 32, icon.getPixelsPtr());
 }
@@ -86,5 +86,6 @@ void App::render()
 	if (!this->states.empty())
 		this->states.top()->render();
 
+	
 	this->window->display();
 }
