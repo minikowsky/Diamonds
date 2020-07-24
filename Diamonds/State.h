@@ -33,7 +33,6 @@ protected:
 	std::stack<State*>* states;
 	bool quit;
 
-	
 	sf::Vector2i mousePos;
 
 };

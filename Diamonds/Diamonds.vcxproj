@@ -147,6 +147,8 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Diamond.cpp" />
+    <ClCompile Include="GameState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="State.cpp" />
@@ -154,6 +156,8 @@
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Diamond.h" />
+    <ClInclude Include="GameState.h" />
     <ClInclude Include="MenuState.h" />
     <ClInclude Include="State.h" />
   </ItemGroup>

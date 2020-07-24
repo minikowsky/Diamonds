@@ -57,7 +57,7 @@ void MenuState::update()
 	if (this->menuButtons["GAME_STATE"]->isPressed())
 	{
 		std::cout << "Game!\n";
-		//this->states->push(new GameState(this->stateData));
+		this->states->push(new GameState(this->stateData));
 	}
 	//Hall of fame
 	if (this->menuButtons["SCORES_STATE"]->isPressed())

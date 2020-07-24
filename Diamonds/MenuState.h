@@ -3,6 +3,7 @@
 #include "State.h"
 #include "Button.h"
 #include <map>
+#include "GameState.h"
 class MenuState :
     public State
 {
@@ -13,7 +14,7 @@ public:
     
     //methods
     void update();
-    void render(sf::RenderTarget* target);
+    void render(sf::RenderTarget* target=NULL);
     void renderBtns(sf::RenderTarget& target);
 private:
     //fields
