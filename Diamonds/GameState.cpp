@@ -35,9 +35,8 @@ void GameState::initGui()
 	this->timerText.setFillColor(sf::Color::White);
 	this->timerText.setCharacterSize(30);
 	this->timerText.setPosition(
-		this->timerBackground.getPosition().x + (this->timerBackground.getGlobalBounds().width / 2.f) - this->timerBackground.getGlobalBounds().width / 2.f,
-		this->timerBackground.getPosition().y
-	);
+		this->timerBackground.getPosition().x + (this->timerBackground.getGlobalBounds().width / 3.f),
+		this->timerBackground.getPosition().y + 5.f);
 	
 }
 
@@ -49,7 +48,13 @@ void GameState::initFields()
 		std::cout << " error opening font file " << std::endl;
 	}
 	start = false;
-	
+	vecDiamonds.resize(9);
+	vecIntDiamonds.resize(9);
+	for (int i = 0; i < 9; i++)
+	{
+		vecDiamonds[i].resize(9);
+		vecIntDiamonds[i].resize(9);
+	}
 }
 void GameState::update()
 {
@@ -71,12 +76,15 @@ void GameState::updateTime()
 	this->remainingTime += ":";
 	int seconds = currentTime % 60;
 	this->remainingTime += std::to_string(seconds);
-	std::cout << remainingTime << std::endl;
+	//std::cout << remainingTime << std::endl;
 	timerText.setString(remainingTime);
 }
 
 void GameState::updateDiamonds()
 {
+	this->updateMouseposition();
+	//updating all of the diamonds
+
 }
 
 void GameState::render(sf::RenderTarget* target)
@@ -102,6 +110,7 @@ void GameState::startGame()
 
 void GameState::checker()
 {
+
 }
 
 void GameState::diamondsChecker()

@@ -23,7 +23,8 @@ private:
     sf::RectangleShape timerBackground;
     sf::Text timerText;
     std::vector<sf::Texture> diamondTextures;
-    std::vector<std::vector<int> >vecDiamonds;
+    std::vector<std::vector<int> >vecIntDiamonds;
+    std::vector<std::vector<Diamond*> >vecDiamonds;
     sf::Font *font;
     sf::Clock dtClock;
     sf::Time time;

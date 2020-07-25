@@ -56,19 +56,19 @@ void MenuState::update()
 	//Game
 	if (this->menuButtons["GAME_STATE"]->isPressed())
 	{
-		std::cout << "Game!\n";
+		//std::cout << "Game!\n";
 		this->states->push(new GameState(this->stateData));
 	}
 	//Hall of fame
 	if (this->menuButtons["SCORES_STATE"]->isPressed())
 	{
-		std::cout << "Scores!\n";
+		//std::cout << "Scores!\n";
 		//this->states->push(new GameState(this->stateData));
 	}
 	//Exit
 	if (this->menuButtons["EXIT_STATE"]->isPressed())
 	{
-		std::cout << "Bye!\n";
+		//std::cout << "Bye!\n";
 		this->endState();
 	}
 }

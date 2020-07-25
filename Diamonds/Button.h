@@ -9,7 +9,7 @@ public:
 	Button(sf::Vector2f btnPosition, sf::Vector2f btnSize,sf::Font* font,std::string text,unsigned char_size,
 		sf::Color text_idle_color, sf::Color text_hover_color, sf::Color text_active_color,
 		sf::Color idle_color, sf::Color hover_color, sf::Color active_color, float text_x = 0, short unsigned id=0);
-	~Button();
+	virtual ~Button();
 
 	//accessors
 	const bool isPressed() const;
