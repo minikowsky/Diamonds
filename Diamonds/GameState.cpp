@@ -59,7 +59,12 @@ void GameState::initFields()
 void GameState::update()
 {
 	this->updateTime();
-	this->updateDiamonds();
+	this->updateMouseposition();
+	
+	if (refillCheck())
+		this->diamondsRefill();
+	else
+		this->updateDiamonds();
 }
 
 void GameState::updateTime()
@@ -82,9 +87,15 @@ void GameState::updateTime()
 
 void GameState::updateDiamonds()
 {
-	this->updateMouseposition();
-	//updating all of the diamonds
-
+	
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++)
+		{
+			vecDiamonds[i][j]->update(this->mousePos);
+		}
+		//TODO:
+	}
 }
 
 void GameState::render(sf::RenderTarget* target)
@@ -108,12 +119,21 @@ void GameState::startGame()
 	dtClock.restart();
 }
 
-void GameState::checker()
+bool GameState::refillCheck()
 {
-
+	bool needToRefill = false;
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++)
+		{
+			if (vecDiamonds[i][j]->getValue() == 0)
+				needToRefill = true;
+		}
+	}
+	return needToRefill;
 }
 
-void GameState::diamondsChecker()
+void GameState::diamondsRefill()
 {
 
 }

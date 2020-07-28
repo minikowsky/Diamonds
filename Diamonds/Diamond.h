@@ -2,14 +2,14 @@
 #include "SFML/Graphics.hpp"
 #include <iostream>
 #include <map>
-enum button_states { dia_IDLE = 0, dia_HOVER, dia_ACTIVE };
+enum diamond_states { dia_IDLE = 0, dia_HOVER, dia_ACTIVE };
 class Diamond
 {
 public:
 	Diamond(sf::Vector2f position, sf::IntRect size,
 		sf::Texture* idle_tex, sf::Texture* hover_tex, sf::Texture* active_tex,
 		int value);
-		//value : red-0, green-1, blue-2, yellow-3
+		//value : red-1, green-2, blue-3, yellow-4
 	virtual ~Diamond();
 	//accessors
 	const bool isPressed() const;

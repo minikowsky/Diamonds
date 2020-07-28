@@ -23,12 +23,12 @@ private:
     sf::RectangleShape timerBackground;
     sf::Text timerText;
     std::vector<sf::Texture> diamondTextures;
-    std::vector<std::vector<int> >vecIntDiamonds;
     std::vector<std::vector<Diamond*> >vecDiamonds;
     sf::Font *font;
     sf::Clock dtClock;
     sf::Time time;
     std::string remainingTime;
+    int score;
     bool start;
 
     //init methods
@@ -38,7 +38,7 @@ private:
     
     //methods
     void startGame();
-    void checker();
-    void diamondsChecker();
+    bool refillCheck();
+    void diamondsRefill();
 };
 
