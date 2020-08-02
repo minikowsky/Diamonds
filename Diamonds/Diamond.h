@@ -27,6 +27,7 @@ private:
 	sf::Texture* activeTexture;
 
 	bool pressed;
+	bool isOn;
 
 };
 

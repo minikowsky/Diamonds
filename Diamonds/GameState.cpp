@@ -6,17 +6,38 @@ GameState::GameState(StateData* state_data)
 	this->initFields();
 	this->initGui();
 	this->initDiamonds();
-	this->startGame();
 }
 
 GameState::~GameState()
 {
 	delete this->font;
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++)
+		{
+			delete vecDiamonds[i][j];
+		}
+	}
 }
 
 void GameState::initDiamonds()
 {
-	
+	std::random_device r;
+	std::default_random_engine generator(r());
+	std::uniform_int_distribution<int> distribtion(0, 3);
+
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++)
+		{
+			int rand = distribtion(generator);
+			//std::cout << rand << "\n";
+			vecDiamonds[i][j] = new Diamond(sf::Vector2f(50 * j + 25, 50 * i + 75), sf::IntRect(0, 0, 50, 50), 
+				&diamondTextures[3 * rand + 1], &diamondTextures[3 * rand + 2], &diamondTextures[3 * rand + 3], rand+1);
+
+
+		}
+	}
 }
 
 void GameState::initGui()
@@ -27,8 +48,8 @@ void GameState::initGui()
 
 	//timer
 	this->timerBackground.setSize(sf::Vector2f(150.f, 50.f));
-	this->timerBackground.setPosition(sf::Vector2f(175.f, 25.f));
-	this->timerBackground.setFillColor(sf::Color(60, 60, 60));
+	this->timerBackground.setPosition(sf::Vector2f(175.f, 20.f));
+	this->timerBackground.setFillColor(sf::Color(60, 60, 60,60));
 
 	this->timerText.setFont(*this->font);
 	this->timerText.setString(remainingTime);
@@ -47,14 +68,26 @@ void GameState::initFields()
 	{
 		std::cout << " error opening font file " << std::endl;
 	}
+	
 	start = false;
+
 	vecDiamonds.resize(9);
-	vecIntDiamonds.resize(9);
 	for (int i = 0; i < 9; i++)
 	{
 		vecDiamonds[i].resize(9);
-		vecIntDiamonds[i].resize(9);
 	}
+
+	firstI = 0, firstJ = 0, secondI = 0, secondJ = 0;
+
+	diamondTextures.resize(13);
+	std::vector<std::string> colors = { "red","green","blue","yellow" };
+	for (int i = 0; i < 4; i++)//four colors
+	{						//three states
+		diamondTextures[i * 3+1].loadFromFile("Assets/" + colors[i] + "_idle.png");
+		diamondTextures[i * 3+2].loadFromFile("Assets/" + colors[i] + "_hover.png");
+		diamondTextures[i * 3+3].loadFromFile("Assets/" + colors[i] + "_active.png");
+	}
+	
 }
 void GameState::update()
 {
@@ -69,13 +102,14 @@ void GameState::update()
 
 void GameState::updateTime()
 {
+	if (!start) return;
 	this->remainingTime = "";
 	time = dtClock.getElapsedTime();
-	if (time.asSeconds() >= 15)
+	if (time.asSeconds() >= 20)
 	{
 		this->endState();
 	}
-	int currentTime = 15-static_cast<int>(this->time.asSeconds());
+	int currentTime = 20-static_cast<int>(this->time.asSeconds());
 	int minutes = currentTime / 60;
 	this->remainingTime += std::to_string(minutes);
 	this->remainingTime += ":";
@@ -93,6 +127,30 @@ void GameState::updateDiamonds()
 		for (int j = 0; j < 9; j++)
 		{
 			vecDiamonds[i][j]->update(this->mousePos);
+			if (vecDiamonds[i][j]->isPressed())
+			{
+				if (this->start == false)
+				{
+					start = true;
+					startGame();
+				}
+				if (this->firstDiamondToChange == false)
+				{
+					this->firstDiamondToChange = true;
+					this->firstI = i;
+					this->firstJ = j;
+				}
+				else if (this->secondDiamondToChange == false && firstI != i && firstJ != j)
+				{
+					this->secondDiamondToChange = true;
+					this->secondI = i;
+					this->secondJ = j;
+					moveDiamonds();
+				}
+				
+			}
+
+
 		}
 		//TODO:
 	}
@@ -111,7 +169,13 @@ void GameState::render(sf::RenderTarget* target)
 
 void GameState::renderDiamonds(sf::RenderTarget& target)
 {
-
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++)
+		{
+			vecDiamonds[i][j]->render(target);
+		}
+	}
 }
 
 void GameState::startGame()
@@ -136,4 +200,8 @@ bool GameState::refillCheck()
 void GameState::diamondsRefill()
 {
 
+}
+
+void GameState::moveDiamonds()
+{
 }

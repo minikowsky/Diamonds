@@ -12,6 +12,7 @@ Diamond::Diamond(sf::Vector2f position, sf::IntRect size, sf::Texture* idle_tex,
 	this->activeTexture = active_tex;
 	this->value = value;
 	this->pressed = false;
+	this->isOn = false;
 }
 
 Diamond::~Diamond()
@@ -39,24 +40,31 @@ const sf::Vector2f Diamond::getPosition() const
 void Diamond::update(const sf::Vector2i& mousePos)
 {
 	//Idle
-	if(!pressed) this->diamondState = dia_IDLE;
+	if (!isOn) this->diamondState = dia_IDLE;
+	else this->diamondState = dia_ACTIVE;
 	//Hover
 	if (this->diaSprite.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
 	{
-		if(this->diamondState == dia_IDLE)
-		this->diamondState = dia_HOVER;
+		if (this->diamondState == dia_IDLE)
+			this->diamondState = dia_HOVER;
 
 		//Pressed
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)&&!isOn)
 		{
-			this->pressed = true;
-			this->diamondState = dia_ACTIVE;
+			pressed = true;
 		}
-		else if (pressed)
+		else if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && isOn)
 		{
-			this->pressed = false;
+			pressed = false;
 		}
+		else
+		{
+			if (pressed) isOn = true;
+			else isOn = false;
+		}
+		
 	}
+	
 	switch (this->diamondState)
 	{
 	case dia_IDLE:

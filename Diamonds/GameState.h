@@ -30,7 +30,9 @@ private:
     std::string remainingTime;
     int score;
     bool start;
-
+    bool firstDiamondToChange;
+    bool secondDiamondToChange;
+    int firstI, firstJ, secondI, secondJ;
     //init methods
     void initDiamonds();
     void initGui();
@@ -40,5 +42,6 @@ private:
     void startGame();
     bool refillCheck();
     void diamondsRefill();
+    void moveDiamonds();
 };
 

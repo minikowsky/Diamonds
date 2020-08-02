@@ -1,5 +1,6 @@
 #pragma once
 #include "SFML/Graphics.hpp"
+#include <random>
 #include <stack>
 #include <iostream>
 #include <map>
