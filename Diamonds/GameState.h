@@ -33,6 +33,7 @@ private:
     bool firstDiamondToChange;
     bool secondDiamondToChange;
     int firstI, firstJ, secondI, secondJ;
+    bool moving;
     //init methods
     void initDiamonds();
     void initGui();
@@ -41,7 +42,9 @@ private:
     //methods
     void startGame();
     bool refillCheck();
+    bool crushCkeck();
     void diamondsRefill();
+    void diamondsCrush();
     void moveDiamonds();
 };
 

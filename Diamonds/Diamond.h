@@ -15,19 +15,20 @@ public:
 	const bool isPressed() const;
 	const int getValue() const;
 	const sf::Vector2f getPosition() const;
+	const bool wasPressed() const;
+	void uncheckPressed();
 	void update(const sf::Vector2i& mousePos);
 	void render(sf::RenderTarget& target);
 private:
 	short unsigned diamondState;
 	int value;
+	bool pressed;
+	bool hasJustBeenPressed;
 	sf::Sprite diaSprite;
 	sf::Vector2f position;
 	sf::Texture* idleTexture;
 	sf::Texture* hoverTexture;
 	sf::Texture* activeTexture;
-
-	bool pressed;
-	bool isOn;
 
 };
 

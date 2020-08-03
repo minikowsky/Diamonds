@@ -26,7 +26,8 @@ Button::Button(sf::Vector2f btnPosition, sf::Vector2f btnSize, sf::Font* font, s
 	this->hoverColor = hover_color;
 	this->activeColor = active_color;
 	
-
+	pressed = false;
+	hasJustBeenPressed = false;
 }
 
 Button::~Button()
@@ -51,6 +52,19 @@ const short unsigned& Button::getId() const
 	return this->id;
 }
 
+const bool Button::wasPressed() const  //returns true if the button was pressed and now is not
+{
+	if (this->hasJustBeenPressed)
+		return true;
+
+	return false;
+}
+
+void Button::uncheckPressed()
+{
+	this->hasJustBeenPressed = false;
+}
+
 void Button::update(const sf::Vector2i& mousePos)
 {
 	//std::cout << mousePos.x << " " << mousePos.y << "\n";
@@ -66,6 +80,12 @@ void Button::update(const sf::Vector2i& mousePos)
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
 			this->buttonState = btn_ACTIVE;
+			pressed = true;
+		}
+		else if (pressed)
+		{
+			pressed = false;
+			hasJustBeenPressed = true;
 		}
 	}
 	switch (this->buttonState)

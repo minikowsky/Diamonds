@@ -15,13 +15,16 @@ public:
 	const bool isPressed() const;
 	const std::string getText() const;
 	const short unsigned& getId() const;
-
+	const bool wasPressed() const;
+	void uncheckPressed();
 	void update(const sf::Vector2i& mousePos);
 	void render(sf::RenderTarget& target);
 private:
 
 	short unsigned buttonState;
 	short unsigned id;
+	bool pressed;
+	bool hasJustBeenPressed;
 	sf::RectangleShape shape;
 	sf::Text text;
 

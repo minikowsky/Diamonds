@@ -77,8 +77,8 @@ void GameState::initFields()
 		vecDiamonds[i].resize(9);
 	}
 
-	firstI = 0, firstJ = 0, secondI = 0, secondJ = 0;
-
+	firstI = -1, firstJ = -1, secondI = -1, secondJ = -1;
+	moving = false;
 	diamondTextures.resize(13);
 	std::vector<std::string> colors = { "red","green","blue","yellow" };
 	for (int i = 0; i < 4; i++)//four colors
@@ -92,12 +92,24 @@ void GameState::initFields()
 void GameState::update()
 {
 	this->updateTime();
-	this->updateMouseposition();
-	
-	if (refillCheck())
+
+	if (moving)
+	{
+		this->moveDiamonds();
+	}
+	else if (crushCkeck())
+	{
+		this->diamondsCrush();
+	}
+	else if (refillCheck())
+	{
 		this->diamondsRefill();
+	}
 	else
+	{
+		this->updateMouseposition();
 		this->updateDiamonds();
+	}
 }
 
 void GameState::updateTime()
@@ -121,38 +133,60 @@ void GameState::updateTime()
 
 void GameState::updateDiamonds()
 {
+	//clearing temp variables
 	
+
+	// loop that checks if the diamond was pressed
 	for (int i = 0; i < 9; i++)
 	{
 		for (int j = 0; j < 9; j++)
 		{
 			vecDiamonds[i][j]->update(this->mousePos);
-			if (vecDiamonds[i][j]->isPressed())
+			if (vecDiamonds[i][j]->wasPressed())
 			{
+				std::cout << i << " " << j << "\n";
+				//if first diamond was pressed, the timer starts
 				if (this->start == false)
 				{
-					start = true;
+					this->start = true;
 					startGame();
 				}
+
 				if (this->firstDiamondToChange == false)
 				{
 					this->firstDiamondToChange = true;
 					this->firstI = i;
 					this->firstJ = j;
 				}
-				else if (this->secondDiamondToChange == false && firstI != i && firstJ != j)
+				else if (this->firstDiamondToChange == true)
 				{
 					this->secondDiamondToChange = true;
 					this->secondI = i;
 					this->secondJ = j;
-					moveDiamonds();
+					
 				}
 				
 			}
-
+			vecDiamonds[i][j]->uncheckPressed();
 
 		}
-		//TODO:
+		//moving two diamonds if they have been pressed
+		if (this->firstDiamondToChange && this->secondDiamondToChange)
+		{
+			if (firstI == secondI && firstJ == secondJ)
+			{
+				vecDiamonds[firstI][firstJ]->uncheckPressed();
+				vecDiamonds[secondI][secondJ]->uncheckPressed();
+				firstI = -1, firstJ = -1, secondI = -1, secondJ = -1;
+				this->secondDiamondToChange = false;
+				this->firstDiamondToChange = false;
+				
+			}
+			else
+			{
+				moving = true;
+			}
+		}
 	}
 }
 
@@ -197,11 +231,26 @@ bool GameState::refillCheck()
 	return needToRefill;
 }
 
+bool GameState::crushCkeck()
+{
+	return false;
+}
+
 void GameState::diamondsRefill()
 {
 
 }
 
-void GameState::moveDiamonds()
+void GameState::diamondsCrush()
 {
+
+}
+
+void GameState::moveDiamonds()
+{	
+	std::cout << "moving first: " << firstI << " " << firstJ << "  and second: " << secondI <<" "<< secondJ << std::endl;
+	moving = false;
+	firstI = -1, firstJ = -1, secondI = -1, secondJ = -1;
+	this->secondDiamondToChange = false;
+	this->firstDiamondToChange = false;
 }
