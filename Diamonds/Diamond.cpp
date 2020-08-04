@@ -34,7 +34,8 @@ const int Diamond::getValue() const
 
 const sf::Vector2f Diamond::getPosition() const
 {
-	return this->position;
+	return diaSprite.getPosition();
+	//return this->position;
 }
 
 const bool Diamond::wasPressed() const
@@ -43,6 +44,34 @@ const bool Diamond::wasPressed() const
 		return true;
 
 	return false;
+}
+//    1
+//  2  -2     <- directions
+//   -1
+void Diamond::move(int x)
+{
+	switch (x)
+	{
+	case -1:
+		this->diaSprite.move(sf::Vector2f(0.f, 1.f));
+		this->position.y += 0.1f;
+		break;
+	case 1:
+		this->diaSprite.move(sf::Vector2f(0.f, -1.f));
+		this->position.y += -0.1f;
+		break;
+	case 2:
+		this->diaSprite.move(sf::Vector2f(-1.f, 0.f));
+		this->position.x += -0.1f;
+		break;
+	case -2:
+		this->diaSprite.move(sf::Vector2f(1.f, 0.f));
+		this->position.x += 0.1f;
+		break;
+	default:
+		std::cout << "sth went wrong :/ \n";
+		break;
+	}
 }
 
 void Diamond::uncheckPressed()

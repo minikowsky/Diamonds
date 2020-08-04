@@ -52,10 +52,14 @@ const short unsigned& Button::getId() const
 	return this->id;
 }
 
-const bool Button::wasPressed() const  //returns true if the button was pressed and now is not
+ bool Button::wasPressed() //returns true if the button was pressed and now is not
 {
 	if (this->hasJustBeenPressed)
+	{
+		this->hasJustBeenPressed = false;
 		return true;
+	}
+		
 
 	return false;
 }

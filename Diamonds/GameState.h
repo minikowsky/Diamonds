@@ -3,6 +3,8 @@
 #include <vector>
 #include "Diamond.h"
 #include <string>
+#include <cmath>
+#include <algorithm>
 class GameState :
     public State
 {
@@ -30,10 +32,13 @@ private:
     std::string remainingTime;
     int score;
     bool start;
+
+    //temp variables to moving diamonds
     bool firstDiamondToChange;
     bool secondDiamondToChange;
     int firstI, firstJ, secondI, secondJ;
     bool moving;
+    sf::Vector2f firstPos, secondPos;
     //init methods
     void initDiamonds();
     void initGui();

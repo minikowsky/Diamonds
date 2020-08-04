@@ -30,10 +30,48 @@ void GameState::initDiamonds()
 	{
 		for (int j = 0; j < 9; j++)
 		{
-			int rand = distribtion(generator);
+			bool x = true;
+			while (x)
+			{
+				int rand = distribtion(generator);
+				if (i == 0&&j==0)
+				{
+					vecDiamonds[i][j] = new Diamond(sf::Vector2f(50 * j + 25, 50 * i + 75), sf::IntRect(0, 0, 50, 50),
+						&diamondTextures[3 * rand + 1], &diamondTextures[3 * rand + 2], &diamondTextures[3 * rand + 3], rand + 1);
+					x = false;
+				}
+				else if (i == 0 && j != 0)
+				{
+					if (vecDiamonds[i][j - 1]->getValue() != rand+1)
+					{
+						vecDiamonds[i][j] = new Diamond(sf::Vector2f(50 * j + 25, 50 * i + 75), sf::IntRect(0, 0, 50, 50),
+							&diamondTextures[3 * rand + 1], &diamondTextures[3 * rand + 2], &diamondTextures[3 * rand + 3], rand + 1);
+						x = false;
+					}
+				}
+				else if (i != 0 && j == 0)
+				{
+					if (vecDiamonds[i-1][j]->getValue() != rand+1)
+					{
+						vecDiamonds[i][j] = new Diamond(sf::Vector2f(50 * j + 25, 50 * i + 75), sf::IntRect(0, 0, 50, 50),
+							&diamondTextures[3 * rand + 1], &diamondTextures[3 * rand + 2], &diamondTextures[3 * rand + 3], rand + 1);
+						x = false;
+					}
+				}
+				else
+				{
+					if (vecDiamonds[i - 1][j]->getValue() != rand+1 && vecDiamonds[i][j - 1]->getValue() != rand+1)
+					{
+						vecDiamonds[i][j] = new Diamond(sf::Vector2f(50 * j + 25, 50 * i + 75), sf::IntRect(0, 0, 50, 50),
+							&diamondTextures[3 * rand + 1], &diamondTextures[3 * rand + 2], &diamondTextures[3 * rand + 3], rand + 1);
+						x = false;
+					}
+				}
+			}
+			
+			
 			//std::cout << rand << "\n";
-			vecDiamonds[i][j] = new Diamond(sf::Vector2f(50 * j + 25, 50 * i + 75), sf::IntRect(0, 0, 50, 50), 
-				&diamondTextures[3 * rand + 1], &diamondTextures[3 * rand + 2], &diamondTextures[3 * rand + 3], rand+1);
+			
 
 
 		}
@@ -89,6 +127,7 @@ void GameState::initFields()
 	}
 	
 }
+
 void GameState::update()
 {
 	this->updateTime();
@@ -117,11 +156,11 @@ void GameState::updateTime()
 	if (!start) return;
 	this->remainingTime = "";
 	time = dtClock.getElapsedTime();
-	if (time.asSeconds() >= 20)
+	if (time.asSeconds() >= 30)
 	{
 		this->endState();
 	}
-	int currentTime = 20-static_cast<int>(this->time.asSeconds());
+	int currentTime = 30-static_cast<int>(this->time.asSeconds());
 	int minutes = currentTime / 60;
 	this->remainingTime += std::to_string(minutes);
 	this->remainingTime += ":";
@@ -175,8 +214,8 @@ void GameState::updateDiamonds()
 		{
 			if (firstI == secondI && firstJ == secondJ)
 			{
-				vecDiamonds[firstI][firstJ]->uncheckPressed();
-				vecDiamonds[secondI][secondJ]->uncheckPressed();
+				//vecDiamonds[firstI][firstJ]->uncheckPressed();
+				//vecDiamonds[secondI][secondJ]->uncheckPressed();
 				firstI = -1, firstJ = -1, secondI = -1, secondJ = -1;
 				this->secondDiamondToChange = false;
 				this->firstDiamondToChange = false;
@@ -185,6 +224,8 @@ void GameState::updateDiamonds()
 			else
 			{
 				moving = true;
+				this->firstPos = vecDiamonds[firstI][firstJ]->getPosition();
+				this->secondPos = vecDiamonds[secondI][secondJ]->getPosition();
 			}
 		}
 	}
@@ -248,9 +289,40 @@ void GameState::diamondsCrush()
 
 void GameState::moveDiamonds()
 {	
-	std::cout << "moving first: " << firstI << " " << firstJ << "  and second: " << secondI <<" "<< secondJ << std::endl;
-	moving = false;
-	firstI = -1, firstJ = -1, secondI = -1, secondJ = -1;
-	this->secondDiamondToChange = false;
-	this->firstDiamondToChange = false;
+	double distance = sqrt(pow(firstI - secondI, 2) + pow(firstJ - secondJ, 2));
+	if (distance != 1)
+	{
+		std::cout <<"these diamonds cannot be changed because they are not next to each other"<< std::endl;
+		moving = false;
+		firstI = -1, firstJ = -1, secondI = -1, secondJ = -1;
+		this->secondDiamondToChange = false;
+		this->firstDiamondToChange = false;
+		return;
+	}
+	//std::cout << secondPos.x << " " << secondPos.y << " \n";
+	if (firstPos == vecDiamonds[secondI][secondJ]->getPosition()
+		&& secondPos == vecDiamonds[firstI][firstJ]->getPosition())
+	{
+
+		moving = false;
+		std::swap(vecDiamonds[firstI][firstJ], vecDiamonds[secondI][secondJ]);
+		firstI = -1, firstJ = -1, secondI = -1, secondJ = -1;
+		this->secondDiamondToChange = false;
+		this->firstDiamondToChange = false;
+		
+		return;
+	}
+	//    1
+	//  2  -2     <- directions
+	//   -1
+	int direction; //the direction of the target position of the first diamond
+	if (firstI - secondI == -1) direction = -1;
+	else if (firstI - secondI == 1) direction = 1;
+	else if (firstJ - secondJ == 1) direction = 2;
+	else direction = -2;
+	vecDiamonds[firstI][firstJ]->move(direction);
+	vecDiamonds[secondI][secondJ]->move(-direction);
+
+	//std::cout << "moving first: " << firstI << " " << firstJ << "  and second: " << secondI <<" "<< secondJ << std::endl;
+	//std::cout << vecDiamonds[firstI][firstJ]->getPosition().x << " " << vecDiamonds[firstI][firstJ]->getPosition().y << std::endl;
 }

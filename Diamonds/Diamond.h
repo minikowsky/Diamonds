@@ -16,6 +16,7 @@ public:
 	const int getValue() const;
 	const sf::Vector2f getPosition() const;
 	const bool wasPressed() const;
+	void move(int x);
 	void uncheckPressed();
 	void update(const sf::Vector2i& mousePos);
 	void render(sf::RenderTarget& target);
