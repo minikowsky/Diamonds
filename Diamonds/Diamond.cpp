@@ -1,6 +1,6 @@
 #include "Diamond.h"
 
-Diamond::Diamond(sf::Vector2f position, sf::IntRect size, sf::Texture* idle_tex, sf::Texture* hover_tex, sf::Texture* active_tex, int value)
+Diamond::Diamond(sf::Vector2f position, sf::IntRect size, sf::Texture* idle_tex, sf::Texture* hover_tex, sf::Texture* active_tex, sf::Texture* crushed_tex, int value)
 {
 	this->diamondState = dia_IDLE;
 	this->position = position;
@@ -10,6 +10,7 @@ Diamond::Diamond(sf::Vector2f position, sf::IntRect size, sf::Texture* idle_tex,
 	this->idleTexture = idle_tex;
 	this->hoverTexture = hover_tex;
 	this->activeTexture = active_tex;
+	this->crushedTexture = crushed_tex;
 	this->value = value;
 	pressed = false;
 	hasJustBeenPressed = false;
@@ -45,28 +46,29 @@ const bool Diamond::wasPressed() const
 
 	return false;
 }
-//    1
-//  2  -2     <- directions
-//   -1
+
 void Diamond::move(int x)
 {
+	//    1
+	//  2  -2     <- directions
+	//   -1
 	switch (x)
 	{
 	case -1:
-		this->diaSprite.move(sf::Vector2f(0.f, 1.f));
-		this->position.y += 0.1f;
+		this->diaSprite.move(sf::Vector2f(0.f, 0.25));
+		this->position.y += 0.25;
 		break;
 	case 1:
-		this->diaSprite.move(sf::Vector2f(0.f, -1.f));
-		this->position.y += -0.1f;
+		this->diaSprite.move(sf::Vector2f(0.f, -0.25));
+		this->position.y += -0.25;
 		break;
 	case 2:
-		this->diaSprite.move(sf::Vector2f(-1.f, 0.f));
-		this->position.x += -0.1f;
+		this->diaSprite.move(sf::Vector2f(-0.25, 0.f));
+		this->position.x += -0.25;
 		break;
 	case -2:
-		this->diaSprite.move(sf::Vector2f(1.f, 0.f));
-		this->position.x += 0.1f;
+		this->diaSprite.move(sf::Vector2f(0.25, 0.f));
+		this->position.x += 0.25;
 		break;
 	default:
 		std::cout << "sth went wrong :/ \n";
@@ -77,6 +79,12 @@ void Diamond::move(int x)
 void Diamond::uncheckPressed()
 {
 	this->hasJustBeenPressed = false;
+}
+
+void Diamond::crushDiamond()
+{
+	this->diaSprite.setTexture(*this->crushedTexture);
+	this->value = 0;
 }
 
 void Diamond::update(const sf::Vector2i& mousePos)

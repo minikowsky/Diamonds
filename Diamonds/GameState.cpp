@@ -25,7 +25,7 @@ void GameState::initDiamonds()
 	std::random_device r;
 	std::default_random_engine generator(r());
 	std::uniform_int_distribution<int> distribtion(0, 3);
-
+	
 	for (int i = 0; i < 9; i++)
 	{
 		for (int j = 0; j < 9; j++)
@@ -37,7 +37,7 @@ void GameState::initDiamonds()
 				if (i == 0&&j==0)
 				{
 					vecDiamonds[i][j] = new Diamond(sf::Vector2f(50 * j + 25, 50 * i + 75), sf::IntRect(0, 0, 50, 50),
-						&diamondTextures[3 * rand + 1], &diamondTextures[3 * rand + 2], &diamondTextures[3 * rand + 3], rand + 1);
+						&diamondTextures[3 * rand + 1], &diamondTextures[3 * rand + 2], &diamondTextures[3 * rand + 3],&diamondTextures[0], rand + 1);
 					x = false;
 				}
 				else if (i == 0 && j != 0)
@@ -45,7 +45,7 @@ void GameState::initDiamonds()
 					if (vecDiamonds[i][j - 1]->getValue() != rand+1)
 					{
 						vecDiamonds[i][j] = new Diamond(sf::Vector2f(50 * j + 25, 50 * i + 75), sf::IntRect(0, 0, 50, 50),
-							&diamondTextures[3 * rand + 1], &diamondTextures[3 * rand + 2], &diamondTextures[3 * rand + 3], rand + 1);
+							&diamondTextures[3 * rand + 1], &diamondTextures[3 * rand + 2], &diamondTextures[3 * rand + 3], &diamondTextures[0], rand + 1);
 						x = false;
 					}
 				}
@@ -54,7 +54,7 @@ void GameState::initDiamonds()
 					if (vecDiamonds[i-1][j]->getValue() != rand+1)
 					{
 						vecDiamonds[i][j] = new Diamond(sf::Vector2f(50 * j + 25, 50 * i + 75), sf::IntRect(0, 0, 50, 50),
-							&diamondTextures[3 * rand + 1], &diamondTextures[3 * rand + 2], &diamondTextures[3 * rand + 3], rand + 1);
+							&diamondTextures[3 * rand + 1], &diamondTextures[3 * rand + 2], &diamondTextures[3 * rand + 3], &diamondTextures[0], rand + 1);
 						x = false;
 					}
 				}
@@ -63,7 +63,7 @@ void GameState::initDiamonds()
 					if (vecDiamonds[i - 1][j]->getValue() != rand+1 && vecDiamonds[i][j - 1]->getValue() != rand+1)
 					{
 						vecDiamonds[i][j] = new Diamond(sf::Vector2f(50 * j + 25, 50 * i + 75), sf::IntRect(0, 0, 50, 50),
-							&diamondTextures[3 * rand + 1], &diamondTextures[3 * rand + 2], &diamondTextures[3 * rand + 3], rand + 1);
+							&diamondTextures[3 * rand + 1], &diamondTextures[3 * rand + 2], &diamondTextures[3 * rand + 3], &diamondTextures[0], rand + 1);
 						x = false;
 					}
 				}
@@ -71,9 +71,6 @@ void GameState::initDiamonds()
 			
 			
 			//std::cout << rand << "\n";
-			
-
-
 		}
 	}
 }
@@ -118,6 +115,7 @@ void GameState::initFields()
 	firstI = -1, firstJ = -1, secondI = -1, secondJ = -1;
 	moving = false;
 	diamondTextures.resize(13);
+	diamondTextures[0].loadFromFile("Assets/crushed.png");
 	std::vector<std::string> colors = { "red","green","blue","yellow" };
 	for (int i = 0; i < 4; i++)//four colors
 	{						//three states
@@ -142,7 +140,8 @@ void GameState::update()
 	}
 	else if (crushCkeck())
 	{
-
+		std::cout << "crush!" << std::endl;
+		std::cout << "beginnig" << beginningOfCrush.x << " " << beginningOfCrush.y << " and end: " << endOfCrush.x << " " << endOfCrush.y << "\n";
 		this->diamondsCrush();
 	}
 	else
@@ -262,9 +261,9 @@ void GameState::startGame()
 bool GameState::refillCheck()
 {
 	bool needToRefill = false;
-	for (int i = 0; i < 9; i++)
+	for (int i = 8; i >= 0; i--)
 	{
-		for (int j = 0; j < 9; j++)
+		for (int j = 8; j >= 0; j--)
 		{
 			if (vecDiamonds[i][j]->getValue() == 0)
 			{
@@ -274,15 +273,25 @@ bool GameState::refillCheck()
 					moving = false;
 
 				}
-				moving = true;
-				firstI = i;
-				firstJ = j;
-				secondI = i - 1;
-				secondJ = j;
+				else
+				{
+					
+					firstI = i;
+					firstJ = j;
+					secondI = i - 1;
+					secondJ = j;
+					std::cout << moving << std::endl;
+					moving = true;
+					this->firstPos = vecDiamonds[firstI][firstJ]->getPosition();
+					this->secondPos = vecDiamonds[secondI][secondJ]->getPosition();
+					
+				}
+				
 			}
 				
 		}
 	}
+	
 	return needToRefill;
 }
 
@@ -364,12 +373,36 @@ bool GameState::crushCkeck()
 
 void GameState::diamondsRefill()
 {
-
+	std::random_device r;
+	std::default_random_engine generator(r());
+	std::uniform_int_distribution<int> distribtion(0, 3);
+	for (int j = 0; j < 9; j++)
+	{
+		if (vecDiamonds[0][j]->getValue() == 0)
+		{
+			int rand = distribtion(generator);
+			vecDiamonds[0][j] = new Diamond(sf::Vector2f(50 * j + 25,  75), sf::IntRect(0, 0, 50, 50),
+				&diamondTextures[3 * rand + 1], &diamondTextures[3 * rand + 2], &diamondTextures[3 * rand + 3], &diamondTextures[0], rand + 1);
+		}
+	}
 }
 
 void GameState::diamondsCrush()
 {
-
+	if (beginningOfCrush.x != endOfCrush.x)
+	{
+		for (int i = beginningOfCrush.x; i <= endOfCrush.x; i++)
+		{
+			vecDiamonds[i][beginningOfCrush.y]->crushDiamond();
+		}
+	}
+	else if (beginningOfCrush.y != endOfCrush.y)
+	{
+		for (int j = beginningOfCrush.y; j <= endOfCrush.y; j++)
+		{
+			vecDiamonds[beginningOfCrush.x][j]->crushDiamond();
+		}
+	}
 }
 
 void GameState::moveDiamonds()
