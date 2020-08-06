@@ -39,6 +39,9 @@ private:
     int firstI, firstJ, secondI, secondJ;
     bool moving;
     sf::Vector2f firstPos, secondPos;
+    //temp variables to fefill diamonds
+    //temp variables to crush diamonds
+    sf::Vector2i beginningOfCrush, endOfCrush;
     //init methods
     void initDiamonds();
     void initGui();

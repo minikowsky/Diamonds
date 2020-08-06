@@ -129,20 +129,21 @@ void GameState::initFields()
 }
 
 void GameState::update()
-{
+{ 
 	this->updateTime();
 
 	if (moving)
 	{
 		this->moveDiamonds();
 	}
-	else if (crushCkeck())
-	{
-		this->diamondsCrush();
-	}
 	else if (refillCheck())
 	{
 		this->diamondsRefill();
+	}
+	else if (crushCkeck())
+	{
+
+		this->diamondsCrush();
 	}
 	else
 	{
@@ -266,14 +267,98 @@ bool GameState::refillCheck()
 		for (int j = 0; j < 9; j++)
 		{
 			if (vecDiamonds[i][j]->getValue() == 0)
-				needToRefill = true;
+			{
+				if (i == 0)
+				{
+					needToRefill = true;
+					moving = false;
+
+				}
+				moving = true;
+				firstI = i;
+				firstJ = j;
+				secondI = i - 1;
+				secondJ = j;
+			}
+				
 		}
 	}
 	return needToRefill;
 }
 
-bool GameState::crushCkeck()
+bool GameState::crushCkeck() 
 {
+	this->beginningOfCrush = sf::Vector2i(-1, -1);
+	this->endOfCrush = sf::Vector2i(-1, -1);
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++)
+		{
+			
+			//down
+			if (i<=6 && vecDiamonds[i][j]->getValue() == vecDiamonds[i + 1][j]->getValue())
+			{
+				if (vecDiamonds[i+1][j]->getValue() == vecDiamonds[i + 2][j]->getValue())
+				{
+					if (i <= 5)
+					{
+						if (vecDiamonds[i + 2][j]->getValue() == vecDiamonds[i + 3][j]->getValue())
+						{
+							if (i <= 4)
+							{
+								if (vecDiamonds[i + 3][j]->getValue() == vecDiamonds[i + 4][j]->getValue())
+								{
+									//5 in a row
+									beginningOfCrush = sf::Vector2i(i, j);
+									endOfCrush = sf::Vector2i(i + 4, j);
+									return true;
+								}
+							}
+							//four in a row
+							beginningOfCrush = sf::Vector2i(i, j);
+							endOfCrush = sf::Vector2i(i + 3, j);
+							return true;
+						}
+					}
+					//3 in a row
+					beginningOfCrush = sf::Vector2i(i, j);
+					endOfCrush = sf::Vector2i(i + 2, j);
+					return true;
+				}
+			}
+			//right
+			if (j<=6 && vecDiamonds[i][j]->getValue() == vecDiamonds[i][j+1]->getValue())
+			{
+				if (vecDiamonds[i][j+1]->getValue() == vecDiamonds[i][j+2]->getValue())
+				{
+					if (j <= 5)
+					{
+						if (vecDiamonds[i][j+2]->getValue() == vecDiamonds[i][j+3]->getValue())
+						{
+							if (j <= 4)
+							{
+								if (vecDiamonds[i][j+3]->getValue() == vecDiamonds[i][j+4]->getValue())
+								{
+									//5 in a row
+									beginningOfCrush = sf::Vector2i(i, j);
+									endOfCrush = sf::Vector2i(i, j+4);
+									return true;
+								}
+							}
+							//four in a row
+							beginningOfCrush = sf::Vector2i(i, j);
+							endOfCrush = sf::Vector2i(i, j+3);
+							return true;
+						}
+					}
+					//3 in a row
+					beginningOfCrush = sf::Vector2i(i, j);
+					endOfCrush = sf::Vector2i(i, j+2);
+					return true;
+				}
+			}
+		}
+	}
 	return false;
 }
 
