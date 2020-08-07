@@ -39,11 +39,14 @@ private:
     bool firstDiamondToChange;
     bool secondDiamondToChange;
     int firstI, firstJ, secondI, secondJ;
-    bool moving;
+    bool moving,returned;
     sf::Vector2f firstPos, secondPos;
-    //temp variables to fefill diamonds
+    //temp variables to refill and falling diamonds
+    bool falling;
+    int counter;
     //temp variables to crush diamonds
     sf::Vector2i beginningOfCrush, endOfCrush;
+   
 
 
     //init methods
@@ -58,5 +61,6 @@ private:
     void diamondsRefill();
     void diamondsCrush();
     void moveDiamonds();
+    void fallingDiamonds();
 };
 
