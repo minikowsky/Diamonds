@@ -76,6 +76,12 @@ void Diamond::move(int x)
 	}
 }
 
+void Diamond::setPosition(sf::Vector2f newPos)
+{
+	this->position = newPos;
+	this->diaSprite.setPosition(newPos);
+}
+
 void Diamond::uncheckPressed()
 {
 	this->hasJustBeenPressed = false;

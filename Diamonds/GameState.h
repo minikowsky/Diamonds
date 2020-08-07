@@ -24,6 +24,8 @@ private:
     sf::RectangleShape background;
     sf::RectangleShape timerBackground;
     sf::Text timerText;
+    sf::RectangleShape scoreBackground;
+    sf::Text scoreText;
     std::vector<sf::Texture> diamondTextures;
     std::vector<std::vector<Diamond*> >vecDiamonds;
     sf::Font *font;
@@ -42,6 +44,8 @@ private:
     //temp variables to fefill diamonds
     //temp variables to crush diamonds
     sf::Vector2i beginningOfCrush, endOfCrush;
+
+
     //init methods
     void initDiamonds();
     void initGui();

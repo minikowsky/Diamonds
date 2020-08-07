@@ -17,6 +17,7 @@ public:
 	const sf::Vector2f getPosition() const;
 	const bool wasPressed() const;
 	void move(int x);
+	void setPosition(sf::Vector2f);
 	void uncheckPressed();
 	void crushDiamond();
 	void update(const sf::Vector2i& mousePos);

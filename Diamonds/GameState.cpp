@@ -93,6 +93,19 @@ void GameState::initGui()
 	this->timerText.setPosition(
 		this->timerBackground.getPosition().x + (this->timerBackground.getGlobalBounds().width / 3.f),
 		this->timerBackground.getPosition().y + 5.f);
+
+	//scoreboard
+	this->scoreBackground.setSize(sf::Vector2f(145.f, 50.f));
+	this->scoreBackground.setPosition(sf::Vector2f(25.f, 20.f));
+	this->scoreBackground.setFillColor(sf::Color(60, 60, 60, 60));
+
+	this->scoreText.setFont(*this->font);
+	this->scoreText.setString("0");
+	this->scoreText.setFillColor(sf::Color::White);
+	this->scoreText.setCharacterSize(30);
+	this->scoreText.setPosition(
+		this->scoreBackground.getPosition().x + (this->scoreBackground.getGlobalBounds().width / 3.f),
+		this->scoreBackground.getPosition().y + 5.f);
 	
 }
 
@@ -104,8 +117,8 @@ void GameState::initFields()
 		std::cout << " error opening font file " << std::endl;
 	}
 	
-	start = false;
-
+	this-> start = false;
+	this-> score = 0;
 	vecDiamonds.resize(9);
 	for (int i = 0; i < 9; i++)
 	{
@@ -113,7 +126,7 @@ void GameState::initFields()
 	}
 
 	firstI = -1, firstJ = -1, secondI = -1, secondJ = -1;
-	moving = false;
+	this->moving = false;
 	diamondTextures.resize(13);
 	diamondTextures[0].loadFromFile("Assets/crushed.png");
 	std::vector<std::string> colors = { "red","green","blue","yellow" };
@@ -140,8 +153,8 @@ void GameState::update()
 	}
 	else if (crushCkeck())
 	{
-		std::cout << "crush!" << std::endl;
-		std::cout << "beginnig" << beginningOfCrush.x << " " << beginningOfCrush.y << " and end: " << endOfCrush.x << " " << endOfCrush.y << "\n";
+		//std::cout << "crush!" << std::endl;
+		//std::cout << "beginnig" << beginningOfCrush.x << " " << beginningOfCrush.y << " and end: " << endOfCrush.x << " " << endOfCrush.y << "\n";
 		this->diamondsCrush();
 	}
 	else
@@ -156,11 +169,11 @@ void GameState::updateTime()
 	if (!start) return;
 	this->remainingTime = "";
 	time = dtClock.getElapsedTime();
-	if (time.asSeconds() >= 30)
+	if (time.asSeconds() >= 120)
 	{
 		this->endState();
 	}
-	int currentTime = 30-static_cast<int>(this->time.asSeconds());
+	int currentTime = 120-static_cast<int>(this->time.asSeconds());
 	int minutes = currentTime / 60;
 	this->remainingTime += std::to_string(minutes);
 	this->remainingTime += ":";
@@ -168,6 +181,8 @@ void GameState::updateTime()
 	this->remainingTime += std::to_string(seconds);
 	//std::cout << remainingTime << std::endl;
 	timerText.setString(remainingTime);
+
+	scoreText.setString(std::to_string(this->score));
 }
 
 void GameState::updateDiamonds()
@@ -237,8 +252,13 @@ void GameState::render(sf::RenderTarget* target)
 		target = this->window;
 	//this->background.setFillColor(sf::Color::White);
 	target->draw(this->background);
+
 	target->draw(this->timerBackground);
 	target->draw(this->timerText);
+
+	target->draw(this->scoreBackground);
+	target->draw(this->scoreText);
+
 	this->renderDiamonds(*target);
 }
 
@@ -270,20 +290,14 @@ bool GameState::refillCheck()
 				if (i == 0)
 				{
 					needToRefill = true;
-					moving = false;
-
 				}
-				else
+				else if(vecDiamonds[i-1][j]->getValue()!=0)
 				{
-					
-					firstI = i;
-					firstJ = j;
-					secondI = i - 1;
-					secondJ = j;
-					std::cout << moving << std::endl;
-					moving = true;
-					this->firstPos = vecDiamonds[firstI][firstJ]->getPosition();
-					this->secondPos = vecDiamonds[secondI][secondJ]->getPosition();
+					this->firstPos = vecDiamonds[i][j]->getPosition();
+					this->secondPos = vecDiamonds[i-1][j]->getPosition();
+					vecDiamonds[i][j]->setPosition(secondPos);
+					vecDiamonds[i-1][j]->setPosition(firstPos);
+					std::swap(vecDiamonds[i][j], vecDiamonds[i-1][j]);
 					
 				}
 				
@@ -389,19 +403,27 @@ void GameState::diamondsRefill()
 
 void GameState::diamondsCrush()
 {
+	int x = 0;
 	if (beginningOfCrush.x != endOfCrush.x)
 	{
 		for (int i = beginningOfCrush.x; i <= endOfCrush.x; i++)
 		{
 			vecDiamonds[i][beginningOfCrush.y]->crushDiamond();
+			this->score += (i - beginningOfCrush.x) * 10 + 10;
+			x += (i - beginningOfCrush.x) * 10 + 10;
+			
 		}
+		std::cout << x << std::endl;
 	}
 	else if (beginningOfCrush.y != endOfCrush.y)
 	{
 		for (int j = beginningOfCrush.y; j <= endOfCrush.y; j++)
 		{
 			vecDiamonds[beginningOfCrush.x][j]->crushDiamond();
+			this->score += (j - beginningOfCrush.y) * 10 + 10;
+			x += (j - beginningOfCrush.y) * 10 + 10;
 		}
+		std::cout << x << std::endl;
 	}
 }
 
