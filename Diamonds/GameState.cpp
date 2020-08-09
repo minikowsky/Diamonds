@@ -147,22 +147,27 @@ void GameState::update()
 	this->updateTime();
 	if (falling)
 	{
+		//std::cout << "falling\n";
 		this->fallingDiamonds();
 	}
 	else if (moving)
 	{
+		//std::cout << "moving\n";
 		this->moveDiamonds();
 	}
 	else if (refillCheck())
 	{
+		//std::cout << "refilling\n";
 		this->diamondsRefill();
 	}
 	else if (crushCkeck())
 	{
+		//std::cout << "crushing\n";
 		this->diamondsCrush();
 	}
 	else
 	{
+		//std::cout << "waiting for player's move\n";
 		this->updateMouseposition();
 		this->updateDiamonds();
 	}
@@ -268,9 +273,9 @@ void GameState::render(sf::RenderTarget* target)
 
 void GameState::renderDiamonds(sf::RenderTarget& target)
 {
-	for (int i = 0; i < 9; i++)
+	for (int i = 8; i >= 0; i--)
 	{
-		for (int j = 0; j < 9; j++)
+		for (int j = 8; j >= 0; j--)
 		{
 			vecDiamonds[i][j]->render(target);
 		}
@@ -299,7 +304,6 @@ bool GameState::refillCheck()
 				{
 					falling = true;
 				}
-				destPos = vecDiamonds[i][j]->getPosition();
 			}
 				
 		}
@@ -333,21 +337,22 @@ bool GameState::crushCkeck()
 									//5 in a row
 									beginningOfCrush = sf::Vector2i(i, j);
 									endOfCrush = sf::Vector2i(i + 4, j);
-									
+									return true;
 								}
 							}
 							//four in a row
 							beginningOfCrush = sf::Vector2i(i, j);
 							endOfCrush = sf::Vector2i(i + 3, j);
+							return true;
 						}
 					}
 					//3 in a row
 					beginningOfCrush = sf::Vector2i(i, j);
 					endOfCrush = sf::Vector2i(i + 2, j);
-					
+					return true;
 				}
-			falling = true;
-			return true;
+			
+			
 			}
 			//right
 			if (j<=6 && vecDiamonds[i][j]->getValue() == vecDiamonds[i][j+1]->getValue())
@@ -365,20 +370,20 @@ bool GameState::crushCkeck()
 									//5 in a row
 									beginningOfCrush = sf::Vector2i(i, j);
 									endOfCrush = sf::Vector2i(i, j+4);
+									return true;
 								}
 							}
 							//four in a row
 							beginningOfCrush = sf::Vector2i(i, j);
 							endOfCrush = sf::Vector2i(i, j+3);
+							return true;
 						}
 					}
 					//3 in a row
 					beginningOfCrush = sf::Vector2i(i, j);
 					endOfCrush = sf::Vector2i(i, j+2);
-					
+					return true;
 				}
-			falling = true;
-			return true;
 			}
 		}
 	}
@@ -395,6 +400,7 @@ void GameState::diamondsRefill()
 	{
 		if (vecDiamonds[0][j]->getValue() == 0)
 		{
+			vecDiamonds[0][j] = NULL;
 			int rand = distribtion(generator);
 			vecDiamonds[0][j] = new Diamond(sf::Vector2f(50 * j + 25,  75), sf::IntRect(0, 0, 50, 50),
 				&diamondTextures[3 * rand + 1], &diamondTextures[3 * rand + 2], &diamondTextures[3 * rand + 3], &diamondTextures[0], rand + 1);
@@ -412,9 +418,8 @@ void GameState::diamondsCrush()
 			vecDiamonds[i][beginningOfCrush.y]->crushDiamond();
 			this->score += (i - beginningOfCrush.x) * 10 + 10;
 			x += (i - beginningOfCrush.x) * 10 + 10;
-			falling = true;
-			
 		}
+		falling = true;
 		std::cout << x << std::endl;
 	}
 	else if (beginningOfCrush.y != endOfCrush.y)
@@ -424,9 +429,14 @@ void GameState::diamondsCrush()
 			vecDiamonds[beginningOfCrush.x][j]->crushDiamond();
 			this->score += (j - beginningOfCrush.y) * 10 + 10;
 			x += (j - beginningOfCrush.y) * 10 + 10;
-			falling = true;
+
 		}
+		falling = true;
 		std::cout << x << std::endl;
+	}
+	else
+	{
+		std::cout << "Something went wrong, error\t";
 	}
 }
 
@@ -484,34 +494,46 @@ void GameState::moveDiamonds()
 
 void GameState::fallingDiamonds()
 {
-	if (this->counter == 100)
+	if (this->counter == 200)
 	{ 
 		//TODO:
 
 		this->counter = 0;
 		
-		if (beginningOfCrush.x != endOfCrush.x) //vertical
+		if (beginningOfCrush.y == endOfCrush.y) //vertical
 		{
-			for (int i = beginningOfCrush.x; i <= endOfCrush.x; i++)
+			falling = false;
+			for (int i = beginningOfCrush.x; i > 0; i--)
 			{
-				if (vecDiamonds[endOfCrush.x][endOfCrush.y]->getValue() != 0)
-				{
-					falling = true;
-				}
+				std::swap(vecDiamonds[i][beginningOfCrush.y], vecDiamonds[i-1][beginningOfCrush.y]);
 
 			}
+			std::cout << vecDiamonds[0][beginningOfCrush.y]->getValue();
+			beginningOfCrush.x++;
 		}
 		else if (beginningOfCrush.y != endOfCrush.y) //horizontal
 		{
 			falling = false;
 			//and we have to refill top row of diamonds
+			for (int i = beginningOfCrush.x; i > 0; i--)
+			{
+				for (int j = beginningOfCrush.y; j <= endOfCrush.y; j++)
+				{
+					std::swap(vecDiamonds[i][j], vecDiamonds[i - 1][j]);
+					if (i == 1)
+					{
+						std::cout << vecDiamonds[0][j]->getValue();
+					}
+				}
+				
+			}
 		}
 
 		return;
 	}
 
 
-	if (beginningOfCrush.x != endOfCrush.x) //vertical
+	if (beginningOfCrush.y == endOfCrush.y) //vertical
 	{
 		if (beginningOfCrush.x > 0)
 		{
@@ -524,7 +546,7 @@ void GameState::fallingDiamonds()
 	}
 	else if (beginningOfCrush.y != endOfCrush.y) //horizontal
 	{
-		for (int i = beginningOfCrush.x; i >= 0; i--)
+		for (int i = beginningOfCrush.x-1; i >= 0; i--)
 		{
 			for (int j = beginningOfCrush.y; j <= endOfCrush.y; j++)
 			{
