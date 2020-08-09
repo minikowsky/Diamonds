@@ -145,29 +145,31 @@ void GameState::initFields()
 void GameState::update()
 { 
 	this->updateTime();
-	if (falling)
+	if (falling) 
 	{
-		//std::cout << "falling\n";
+
+		// if there are some empty places int the middle, diamonds that are higher fall
 		this->fallingDiamonds();
 	}
 	else if (moving)
 	{
-		//std::cout << "moving\n";
+		// if user move diamond, there appears animation of moving
 		this->moveDiamonds();
 	}
-	else if (refillCheck())
-	{
-		//std::cout << "refilling\n";
+	else if (refillCheck())// <- this method searches for empty places, if some appears in the middle, then the falling begins
+	{                                                                // if some appears on the top row, then diamond refilling begins
+		
+		//if on the top row are empty places, there appears new diamond
 		this->diamondsRefill();
 	}
-	else if (crushCkeck())
+	else if (crushCkeck())// <- this method searches for min. 3 diamonds of the same type in a row or in a column
 	{
-		//std::cout << "crushing\n";
+		//if there are min. 3 diamonds in a row or in a column, then these diamonds are crushing
 		this->diamondsCrush();
 	}
 	else
 	{
-		//std::cout << "waiting for player's move\n";
+		//if there are not falling or moving action and there are not diamonds to crush or empty places, then user can do sth ;p
 		this->updateMouseposition();
 		this->updateDiamonds();
 	}
