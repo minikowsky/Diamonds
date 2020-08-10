@@ -55,20 +55,20 @@ void Diamond::move(int x)
 	switch (x)
 	{
 	case -1:
-		this->diaSprite.move(sf::Vector2f(0.f, 0.25));
-		this->position.y += 0.25;
+		this->diaSprite.move(sf::Vector2f(0.f, 0.5));
+		this->position.y += 0.5;
 		break;
 	case 1:
-		this->diaSprite.move(sf::Vector2f(0.f, -0.25));
-		this->position.y += -0.25;
+		this->diaSprite.move(sf::Vector2f(0.f, -0.5));
+		this->position.y += -0.5;
 		break;
 	case 2:
-		this->diaSprite.move(sf::Vector2f(-0.25, 0.f));
-		this->position.x += -0.25;
+		this->diaSprite.move(sf::Vector2f(-0.5, 0.f));
+		this->position.x += -0.5;
 		break;
 	case -2:
-		this->diaSprite.move(sf::Vector2f(0.25, 0.f));
-		this->position.x += 0.25;
+		this->diaSprite.move(sf::Vector2f(0.5, 0.f));
+		this->position.x += 0.5;
 		break;
 	default:
 		std::cout << "sth went wrong :/ \n";

@@ -79,7 +79,7 @@ void GameState::initGui()
 {
 	//background
 	this->background.setSize(static_cast<sf::Vector2f>(window->getSize()));
-	this->background.setFillColor(sf::Color(232, 232, 232));
+	this->background.setFillColor(sf::Color(240,240,240));
 
 	//timer
 	this->timerBackground.setSize(sf::Vector2f(150.f, 50.f));
@@ -496,40 +496,12 @@ void GameState::moveDiamonds()
 
 void GameState::fallingDiamonds()
 {
-	if (this->counter == 200)
+	if (this->counter == 100)
 	{ 
 		//TODO:
 
 		this->counter = 0;
-		/*
-		if (beginningOfCrush.y == endOfCrush.y) //vertical
-		{
-			falling = false;
-			for (int i = beginningOfCrush.x; i > 0; i--)
-			{
-				std::swap(vecDiamonds[i][beginningOfCrush.y], vecDiamonds[i-1][beginningOfCrush.y]);
-
-			}
-			std::cout << vecDiamonds[0][beginningOfCrush.y]->getValue();
-			beginningOfCrush.x++;
-		}
-		else if (beginningOfCrush.y != endOfCrush.y) //horizontal
-		{
-			falling = false;
-			//and we have to refill top row of diamonds
-			for (int i = beginningOfCrush.x; i > 0; i--)
-			{
-				for (int j = beginningOfCrush.y; j <= endOfCrush.y; j++)
-				{
-					std::swap(vecDiamonds[i][j], vecDiamonds[i - 1][j]);
-					if (i == 1)
-					{
-						std::cout << vecDiamonds[0][j]->getValue();
-					}
-				}
-				
-			}
-		}*/
+		
 		bool end = false;
 		this->falling = false;
 		for (int i = 8; i > 0; i--)
@@ -554,29 +526,6 @@ void GameState::fallingDiamonds()
 		return;
 	}
 
-	/*
-	if (beginningOfCrush.y == endOfCrush.y) //vertical
-	{
-		if (beginningOfCrush.x > 0)
-		{
-			for (int i = beginningOfCrush.x-1; i >=0 ; i--)
-			{
-				vecDiamonds[i][beginningOfCrush.y]->move(-1);
-			}
-		}
-		
-	}
-	else if (beginningOfCrush.y != endOfCrush.y) //horizontal
-	{
-		for (int i = beginningOfCrush.x-1; i >= 0; i--)
-		{
-			for (int j = beginningOfCrush.y; j <= endOfCrush.y; j++)
-			{
-				vecDiamonds[i][j]->move(-1);
-			}
-		}
-		
-	}*/
 	bool end = false;
 	for (int i = 8; i >= 0; i--)
 	{
