@@ -501,7 +501,7 @@ void GameState::fallingDiamonds()
 		//TODO:
 
 		this->counter = 0;
-		
+		/*
 		if (beginningOfCrush.y == endOfCrush.y) //vertical
 		{
 			falling = false;
@@ -529,12 +529,32 @@ void GameState::fallingDiamonds()
 				}
 				
 			}
-		}
+		}*/
+		bool end = false;
+		this->falling = false;
+		for (int i = 8; i > 0; i--)
+		{
+			for (int j = 0; j < 9; j++)
+			{
+				if (vecDiamonds[i][j]->getValue() == 0)
+				{
+					end = true;
+					for (int ii = i; ii > 0; ii--)
+					{
+						std::swap(vecDiamonds[ii][j], vecDiamonds[ii - 1][j]);
+					}
+				}
+			}
+			if (end == true)
+			{
+				break;
+			}
 
+		}
 		return;
 	}
 
-
+	/*
 	if (beginningOfCrush.y == endOfCrush.y) //vertical
 	{
 		if (beginningOfCrush.x > 0)
@@ -556,6 +576,26 @@ void GameState::fallingDiamonds()
 			}
 		}
 		
+	}*/
+	bool end = false;
+	for (int i = 8; i >= 0; i--)
+	{
+		for (int j = 0; j <= 8; j++)
+		{
+			if (vecDiamonds[i][j]->getValue() == 0)
+			{
+				end = true;
+				for (int ii = i-1; ii >= 0; ii--)
+				{
+					vecDiamonds[ii][j]->move(-1);
+				}
+			}
+		}
+		if (end == true)
+		{
+			break;
+		}
+
 	}
 	this->counter++;
 }
