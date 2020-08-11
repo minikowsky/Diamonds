@@ -120,6 +120,7 @@ void GameState::initFields()
 	this-> start = false;
 	this-> score = 0;
 	this->falling = false;
+	this->finish = false;
 	vecDiamonds.resize(9);
 	for (int i = 0; i < 9; i++)
 	{
@@ -130,6 +131,7 @@ void GameState::initFields()
 	this->moving = false;
 	this->returned = false;
 	this->counter = 0;
+	this->finishGameWasPressed = false;
 	diamondTextures.resize(13);
 	diamondTextures[0].loadFromFile("Assets/crushed.png");
 	std::vector<std::string> colors = { "red","green","blue","yellow" };
@@ -145,6 +147,11 @@ void GameState::initFields()
 void GameState::update()
 { 
 	this->updateTime();
+	if (finish)
+	{
+		this->updateMouseposition();
+		scoreView();
+	}
 	if (falling) 
 	{
 
@@ -180,11 +187,11 @@ void GameState::updateTime()
 	if (!start) return;
 	this->remainingTime = "";
 	time = dtClock.getElapsedTime();
-	if (time.asSeconds() >= 120)
+	if (time.asSeconds() >= 10)
 	{
-		this->endState();
+		finish = true;
 	}
-	int currentTime = 120-static_cast<int>(this->time.asSeconds());
+	int currentTime = 10-static_cast<int>(this->time.asSeconds());
 	int minutes = currentTime / 60;
 	this->remainingTime += std::to_string(minutes);
 	this->remainingTime += ":";
@@ -264,13 +271,22 @@ void GameState::render(sf::RenderTarget* target)
 	//this->background.setFillColor(sf::Color::White);
 	target->draw(this->background);
 
-	target->draw(this->timerBackground);
-	target->draw(this->timerText);
+	if (finish)
+	{
+		target->draw(this->finalText);
+	}
+	else
+	{
+		target->draw(this->timerBackground);
+		target->draw(this->timerText);
 
-	target->draw(this->scoreBackground);
-	target->draw(this->scoreText);
+		target->draw(this->scoreBackground);
+		target->draw(this->scoreText);
 
-	this->renderDiamonds(*target);
+		this->renderDiamonds(*target);
+	}
+
+	
 }
 
 void GameState::renderDiamonds(sf::RenderTarget& target)
@@ -287,6 +303,25 @@ void GameState::renderDiamonds(sf::RenderTarget& target)
 void GameState::startGame()
 {
 	dtClock.restart();
+}
+
+void GameState::scoreView()
+{
+	std::string finalString = "Congratulations!\n\n\nYou scored \n" + std::to_string(this->score) + "points in "+ std::to_string(this->moves) + " moves!\n\nPress left mouse button to continue";
+	this->finalText.setFont(*this->font);
+	this->finalText.setString(finalString);
+	this->finalText.setFillColor(sf::Color(60,60,60));
+	this->finalText.setCharacterSize(30);
+	this->finalText.setPosition(20.f,150.f);
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		finishGameWasPressed = true;
+	}
+	else if (finishGameWasPressed)
+	{
+		this->endState();
+	}
+
 }
 
 bool GameState::refillCheck()
@@ -467,9 +502,11 @@ void GameState::moveDiamonds()
 			std::swap(firstPos, secondPos);
 			moving = true;
 			returned = true;
+			
 		}
 		else
 		{
+			moves++;
 			firstI = -1, firstJ = -1, secondI = -1, secondJ = -1;
 			this->secondDiamondToChange = false;
 			this->firstDiamondToChange = false;

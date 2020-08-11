@@ -46,9 +46,11 @@ private:
     int counter;
     //temp variables to crush diamonds
     sf::Vector2i beginningOfCrush, endOfCrush;
-   
-
-
+    //score view
+    bool finish;
+    int moves;
+    sf::Text finalText;
+    bool finishGameWasPressed;
     //init methods
     void initDiamonds();
     void initGui();
@@ -56,11 +58,13 @@ private:
     
     //methods
     void startGame();
+    void scoreView();
     bool refillCheck();
     bool crushCkeck();
     void diamondsRefill();
     void diamondsCrush();
     void moveDiamonds();
     void fallingDiamonds();
+    
 };
 
