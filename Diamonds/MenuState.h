@@ -4,6 +4,7 @@
 #include "Button.h"
 #include <map>
 #include "GameState.h"
+#include "TutorialState.h"
 class MenuState :
     public State
 {

@@ -149,6 +149,7 @@ void GameState::update()
 	this->updateTime();
 	if (finish)
 	{
+		//if the game time runs out, the end window is shown
 		this->updateMouseposition();
 		scoreView();
 	}
@@ -307,7 +308,7 @@ void GameState::startGame()
 
 void GameState::scoreView()
 {
-	std::string finalString = "Congratulations!\n\n\nYou scored \n" + std::to_string(this->score) + "points in "+ std::to_string(this->moves) + " moves!\n\nPress left mouse button to continue";
+	std::string finalString = "Congratulations!\n\n\nYou scored \n" + std::to_string(this->score) + "points in "+ std::to_string(this->moves) + " moves!\n\n\n\nPress left mouse button to continue";
 	this->finalText.setFont(*this->font);
 	this->finalText.setString(finalString);
 	this->finalText.setFillColor(sf::Color(60,60,60));
