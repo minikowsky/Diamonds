@@ -3,6 +3,7 @@
 #include "Button.h"
 #include "Diamond.h"
 #include <map>
+
 class TutorialState :
     public State
 {
@@ -13,15 +14,22 @@ public:
 
     //public methods
     void update();
+    void updateText();
     void render(sf::RenderTarget* target = NULL);
 private:
     //fields
     sf::RectangleShape background;
-    std::map<std::string, Button*> TutorialButtons;
+    std::map<std::string, Button*> tutorialButtons;
     std::vector<sf::Texture> diamondTextures;
     std::vector<std::vector<Diamond*> >vecDiamonds;
-    sf::Font* font;
+    sf::Font *font;
+    sf::Text text;
+    int tutorialStage;
+    std::vector<std::string> vecTexts;
     //inits
     void initGui();
+    void initFields();
+
+    
 };
 
