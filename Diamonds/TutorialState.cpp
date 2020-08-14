@@ -20,7 +20,7 @@ void TutorialState::initGui()
 {
 	//Background
 	this->background.setSize(static_cast<sf::Vector2f>(window->getSize()));
-	this->background.setFillColor(sf::Color(90, 90, 90));
+	this->background.setFillColor(sf::Color(70,70,70));
 	//Text
 	this->text.setFont(*this->font);
 	this->text.setFillColor(sf::Color(60, 60, 60));
@@ -30,12 +30,12 @@ void TutorialState::initGui()
 
 	this->tutorialButtons["<"] = new Button(sf::Vector2f(50.f, 500.f), sf::Vector2f(50.f, 50.f), 
 		this->font, "<", 30,
-		sf::Color(200, 200, 200, 200), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
-		sf::Color(70, 70, 70, 150), sf::Color(150, 150, 150, 150), sf::Color(20, 20, 20, 150),15.f);
+		sf::Color(70, 70, 70), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
+		sf::Color(26, 196, 179), sf::Color(26, 173, 159), sf::Color(26, 145, 134),15.f);
 
 	this->tutorialButtons[">"] = new Button(sf::Vector2f(400.f, 500.f), sf::Vector2f(50.f, 50.f), this->font, ">", 30,
-		sf::Color(200, 200, 200, 200), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
-		sf::Color(70, 70, 70, 150), sf::Color(150, 150, 150, 150), sf::Color(20, 20, 20, 150), 15.f);
+		sf::Color(70, 70, 70), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
+		sf::Color(26, 196, 179), sf::Color(26, 173, 159), sf::Color(26, 145, 134), 15.f);
 }
 
 void TutorialState::initFields()

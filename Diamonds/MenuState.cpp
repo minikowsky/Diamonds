@@ -21,21 +21,21 @@ void MenuState::initGui()
 	
 	//Background
 	this->background.setSize(static_cast<sf::Vector2f>(window->getSize()));
-	this->background.setFillColor(sf::Color(90,90,90));
+	this->background.setFillColor(sf::Color(70,70,70));
 	//this->background.setFillColor(sf::Color(25, 163, 255));
 	//Buttons
 	this->menuButtons["GAME_STATE"] = new Button(sf::Vector2f(150.f,150.f), sf::Vector2f(200.f, 50.f),&this->font,"New Game",30,
-		sf::Color(200, 200, 200, 200), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
-		sf::Color(70, 70, 70, 150), sf::Color(150, 150, 150, 150), sf::Color(20, 20, 20, 150),30.f);
+		sf::Color(70, 70, 70), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
+		sf::Color(26, 196, 179), sf::Color(26, 173, 159), sf::Color(26, 145, 134),30.f);
 
 	this->menuButtons["TUTORIAL_STATE"] = new Button(sf::Vector2f(150.f, 250.f), sf::Vector2f(200.f, 50.f), &this->font, "Tutorial", 30,
-		sf::Color(200, 200, 200, 200), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
-		sf::Color(70, 70, 70, 150), sf::Color(150, 150, 150, 150), sf::Color(20, 20, 20, 150),50.f);
+		sf::Color(70, 70, 70), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
+		sf::Color(26, 196, 179), sf::Color(26, 173, 159), sf::Color(26,145,134),50.f);
 
 
 	this->menuButtons["EXIT_STATE"] = new Button(sf::Vector2f(150.f, 350.f), sf::Vector2f(200.f, 50.f), &this->font, "Exit", 30,
-		sf::Color(200, 200, 200, 200), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
-		sf::Color(70, 70, 70, 150), sf::Color(150, 150, 150, 150), sf::Color(20, 20, 20, 150),70.f);
+		sf::Color(70, 70, 70), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
+		sf::Color(26, 196, 179), sf::Color(26, 173, 159), sf::Color(26, 145, 134),70.f);
 }
 
 void MenuState::initFields()
