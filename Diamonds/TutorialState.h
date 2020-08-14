@@ -16,6 +16,7 @@ public:
     void update();
     void updateText();
     void render(sf::RenderTarget* target = NULL);
+    void renderBtns(sf::RenderTarget& target);
 private:
     //fields
     sf::RectangleShape background;

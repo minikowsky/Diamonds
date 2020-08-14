@@ -63,7 +63,7 @@ void MenuState::update()
 	if (this->menuButtons["TUTORIAL_STATE"]->wasPressed())
 	{
 		//std::cout << "Scores!\n";
-		//this->states->push(new GameState(this->stateData));
+		this->states->push(new TutorialState(this->stateData));
 	}
 	//Exit
 	if (this->menuButtons["EXIT_STATE"]->wasPressed())

@@ -3,8 +3,9 @@
 TutorialState::TutorialState(StateData* state_data)
 	:State(state_data)
 {
-	this->initGui();
 	this->initFields();
+	this->initGui();
+	
 }
 
 TutorialState::~TutorialState()
@@ -27,13 +28,14 @@ void TutorialState::initGui()
 	this->text.setPosition(50.f, 120.f);
 
 
-	this->tutorialButtons["<"] = new Button(sf::Vector2f(150.f, 150.f), sf::Vector2f(200.f, 50.f), this->font, "<", 30,
+	this->tutorialButtons["<"] = new Button(sf::Vector2f(50.f, 500.f), sf::Vector2f(50.f, 50.f), 
+		this->font, "<", 30,
 		sf::Color(200, 200, 200, 200), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
-		sf::Color(70, 70, 70, 150), sf::Color(150, 150, 150, 150), sf::Color(20, 20, 20, 150), 30.f);
+		sf::Color(70, 70, 70, 150), sf::Color(150, 150, 150, 150), sf::Color(20, 20, 20, 150),15.f);
 
-	this->tutorialButtons[">"] = new Button(sf::Vector2f(150.f, 250.f), sf::Vector2f(200.f, 50.f), this->font, ">", 30,
+	this->tutorialButtons[">"] = new Button(sf::Vector2f(400.f, 500.f), sf::Vector2f(50.f, 50.f), this->font, ">", 30,
 		sf::Color(200, 200, 200, 200), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
-		sf::Color(70, 70, 70, 150), sf::Color(150, 150, 150, 150), sf::Color(20, 20, 20, 150), 50.f);
+		sf::Color(70, 70, 70, 150), sf::Color(150, 150, 150, 150), sf::Color(20, 20, 20, 150), 15.f);
 }
 
 void TutorialState::initFields()
@@ -101,5 +103,19 @@ void TutorialState::updateText()
 
 void TutorialState::render(sf::RenderTarget* target)
 {
+	if (!target)
+		target = this->window;
 
+	
+	target->draw(this->background);
+	target->draw(this->text);
+	renderBtns(*target);
+}
+
+void TutorialState::renderBtns(sf::RenderTarget& target)
+{
+	for (auto& it : this->tutorialButtons)
+	{
+		it.second->render(target);
+	}
 }
