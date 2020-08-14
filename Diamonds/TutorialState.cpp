@@ -23,13 +23,12 @@ void TutorialState::initGui()
 	this->background.setFillColor(sf::Color(70,70,70));
 	//Text
 	this->text.setFont(*this->font);
-	this->text.setFillColor(sf::Color(60, 60, 60));
-	this->text.setCharacterSize(30);
+	this->text.setFillColor(sf::Color(200, 200, 200));
+	this->text.setCharacterSize(24);
 	this->text.setPosition(50.f, 120.f);
 
 
-	this->tutorialButtons["<"] = new Button(sf::Vector2f(50.f, 500.f), sf::Vector2f(50.f, 50.f), 
-		this->font, "<", 30,
+	this->tutorialButtons["<"] = new Button(sf::Vector2f(50.f, 500.f), sf::Vector2f(50.f, 50.f), this->font, "<", 30,
 		sf::Color(70, 70, 70), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
 		sf::Color(26, 196, 179), sf::Color(26, 173, 159), sf::Color(26, 145, 134),15.f);
 
@@ -45,14 +44,16 @@ void TutorialState::initFields()
 	{
 		std::cout << " error opening font file " << std::endl;
 	}
+
 	tutorialStage = 1;
-	vecTexts.resize(6);
+	vecTexts.resize(7);
 	vecTexts[0] = "";
-	vecTexts[1] = "text_1";
-	vecTexts[2] = "text_2";
-	vecTexts[3] = "text_3";
-	vecTexts[4] = "text_4";
-	vecTexts[5] = "";
+	vecTexts[1] = "After pressing 'New game' \na 9x9 board with diamonds of \ndiferent colors will be shown";
+	vecTexts[2] = "Your task is to line up \ndiamonds of the same color \nby swapping two adjacent diamonds \nto create at least a string of 3 or more \ndiamonds in the same color";
+	vecTexts[3] = "When you place at least 3 diamonds, \nthey will be destroyed and \nnew diamonds will fall from above";
+	vecTexts[4] = "The more rows \nof diamonds you arrange, \nthe more points you get";
+	vecTexts[5] = "You have only 120 seconds for that. \nHurry up!";
+	vecTexts[6] = "";
 }
 
 void TutorialState::update()
@@ -93,6 +94,9 @@ void TutorialState::updateText()
 		text.setString(vecTexts[4]);
 		break;
 	case 5:
+		text.setString(vecTexts[5]);
+		break;
+	case 6:
 		this->endState();
 		break;
 	default:
