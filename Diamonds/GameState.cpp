@@ -448,29 +448,84 @@ void GameState::diamondsRefill()
 
 void GameState::diamondsCrush()
 {
-	int x = 0;
-	if (beginningOfCrush.x != endOfCrush.x)
+	if (beginningOfCrush.x != endOfCrush.x) //vertical
 	{
+		//searching for L or T shape of min 3 in the same color and destroying them
+		if (beginningOfCrush.y >= 2)
+		{
+			for (int i = beginningOfCrush.x; i <= endOfCrush.x; i++)
+			{
+				if (vecDiamonds[i][beginningOfCrush.y]->getValue() == vecDiamonds[i][beginningOfCrush.y - 1]->getValue()
+					&& vecDiamonds[i][beginningOfCrush.y - 2]->getValue() == vecDiamonds[i][beginningOfCrush.y - 1]->getValue())
+				{
+					vecDiamonds[i][beginningOfCrush.y-1]->crushDiamond();
+					vecDiamonds[i][beginningOfCrush.y - 2]->crushDiamond();
+					this->score += 40;
+				}
+			}
+
+		}
+		if (beginningOfCrush.y <=6)
+		{
+			for (int i = beginningOfCrush.x; i <= endOfCrush.x; i++)
+			{
+				if (vecDiamonds[i][beginningOfCrush.y]->getValue() == vecDiamonds[i][beginningOfCrush.y + 1]->getValue()
+					&& vecDiamonds[i][beginningOfCrush.y + 2]->getValue() == vecDiamonds[i][beginningOfCrush.y + 1]->getValue())
+				{
+					vecDiamonds[i][beginningOfCrush.y + 1]->crushDiamond();
+					vecDiamonds[i][beginningOfCrush.y + 2]->crushDiamond();
+					this->score += 40;
+				}
+			}
+
+		}
+		//destroying the row
 		for (int i = beginningOfCrush.x; i <= endOfCrush.x; i++)
 		{
 			vecDiamonds[i][beginningOfCrush.y]->crushDiamond();
 			this->score += (i - beginningOfCrush.x) * 10 + 10;
-			x += (i - beginningOfCrush.x) * 10 + 10;
 		}
 		falling = true;
-		std::cout << x << std::endl;
 	}
-	else if (beginningOfCrush.y != endOfCrush.y)
+	else if (beginningOfCrush.y != endOfCrush.y) //horizontal
 	{
+		//searching for L or T shape of min 3 in the same color and destroying them
+		if (beginningOfCrush.x >= 2)
+		{
+			for (int j = beginningOfCrush.y; j <= endOfCrush.y; j++)
+			{
+				if (vecDiamonds[beginningOfCrush.x][j]->getValue() == vecDiamonds[beginningOfCrush.x-1][j]->getValue()
+					&& vecDiamonds[beginningOfCrush.x-2][j]->getValue() == vecDiamonds[beginningOfCrush.x-1][j]->getValue())
+				{
+					vecDiamonds[beginningOfCrush.x - 2][j]->crushDiamond();
+					vecDiamonds[beginningOfCrush.x - 1][j]->crushDiamond();
+					this->score += 40;
+				}
+			}
+
+		}
+		if (beginningOfCrush.x <= 6)
+		{
+			for (int j = beginningOfCrush.y; j <= endOfCrush.y; j++)
+			{
+				if (vecDiamonds[beginningOfCrush.x][j]->getValue() == vecDiamonds[beginningOfCrush.x + 1][j]->getValue()
+					&& vecDiamonds[beginningOfCrush.x + 2][j]->getValue() == vecDiamonds[beginningOfCrush.x + 1][j]->getValue())
+				{
+					vecDiamonds[beginningOfCrush.x + 2][j]->crushDiamond();
+					vecDiamonds[beginningOfCrush.x + 1][j]->crushDiamond();
+					this->score += 40;
+				}
+			}
+
+		}
 		for (int j = beginningOfCrush.y; j <= endOfCrush.y; j++)
 		{
 			vecDiamonds[beginningOfCrush.x][j]->crushDiamond();
 			this->score += (j - beginningOfCrush.y) * 10 + 10;
-			x += (j - beginningOfCrush.y) * 10 + 10;
 
 		}
 		falling = true;
-		std::cout << x << std::endl;
+		//std::cout << x << std::endl;
 	}
 	else
 	{
