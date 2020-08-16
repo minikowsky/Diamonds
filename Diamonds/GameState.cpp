@@ -106,6 +106,10 @@ void GameState::initGui()
 	this->scoreText.setPosition(
 		this->scoreBackground.getPosition().x + (this->scoreBackground.getGlobalBounds().width / 3.f),
 		this->scoreBackground.getPosition().y + 5.f);
+
+	this->quitBtn = new Button(sf::Vector2f(330.f,20.f),sf::Vector2f(145.f,50.f),this->font,"Quit",30,
+		sf::Color::White, sf::Color::White, sf::Color::White,
+		sf::Color(60, 60, 60, 60), sf::Color(60, 60, 60, 150), sf::Color(60, 60, 60, 60),40.f);
 	
 }
 
@@ -147,6 +151,7 @@ void GameState::initFields()
 void GameState::update()
 { 
 	this->updateTime();
+	
 	if (finish)
 	{
 		//if the game time runs out, the end window is shown
@@ -179,8 +184,11 @@ void GameState::update()
 	{
 		//if there are not falling or moving action and there are not diamonds to crush or empty places, then user can do sth ;p
 		this->updateMouseposition();
+		
 		this->updateDiamonds();
 	}
+	this->quitBtn->update(mousePos);
+	if (this->quitBtn->wasPressed()) this->endState();
 }
 
 void GameState::updateTime()
@@ -271,7 +279,7 @@ void GameState::render(sf::RenderTarget* target)
 		target = this->window;
 	//this->background.setFillColor(sf::Color::White);
 	target->draw(this->background);
-
+	quitBtn->render(*target);
 	if (finish)
 	{
 		target->draw(this->finalText);
@@ -286,7 +294,7 @@ void GameState::render(sf::RenderTarget* target)
 
 		this->renderDiamonds(*target);
 	}
-
+	
 	
 }
 

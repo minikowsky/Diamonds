@@ -5,6 +5,7 @@
 #include <string>
 #include <cmath>
 #include <algorithm>
+#include "Button.h"
 class GameState :
     public State
 {
@@ -31,6 +32,7 @@ private:
     sf::Font *font;
     sf::Clock dtClock;
     sf::Time time;
+    Button* quitBtn;
     std::string remainingTime;
     int score;
     bool start;

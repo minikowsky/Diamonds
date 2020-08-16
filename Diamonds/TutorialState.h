@@ -27,6 +27,8 @@ private:
     sf::Text text;
     int tutorialStage;
     std::vector<std::string> vecTexts;
+    sf::Texture boardTex, three1Tex,three2Tex;
+    sf::Sprite boardSprite, three1Sprite,three2Sprite;
     //inits
     void initGui();
     void initFields();

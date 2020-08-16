@@ -25,7 +25,7 @@ void TutorialState::initGui()
 	this->text.setFont(*this->font);
 	this->text.setFillColor(sf::Color(200, 200, 200));
 	this->text.setCharacterSize(24);
-	this->text.setPosition(50.f, 120.f);
+	this->text.setPosition(75.f, 50.f);
 
 
 	this->tutorialButtons["<"] = new Button(sf::Vector2f(50.f, 500.f), sf::Vector2f(50.f, 50.f), this->font, "<", 30,
@@ -35,6 +35,15 @@ void TutorialState::initGui()
 	this->tutorialButtons[">"] = new Button(sf::Vector2f(400.f, 500.f), sf::Vector2f(50.f, 50.f), this->font, ">", 30,
 		sf::Color(70, 70, 70), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
 		sf::Color(26, 196, 179), sf::Color(26, 173, 159), sf::Color(26, 145, 134), 15.f);
+	this->boardTex.loadFromFile("Assets/9x9.png");
+	this->boardSprite.setTexture(boardTex);
+	this->boardSprite.setPosition(100.f, 150.f);
+	this->three1Tex.loadFromFile("Assets/three1.png");
+	this->three1Sprite.setTexture(three1Tex);
+	this->three1Sprite.setPosition(80.f, 280.f);
+	this->three2Tex.loadFromFile("Assets/three2.png");
+	this->three2Sprite.setTexture(three2Tex);
+	this->three2Sprite.setPosition(280.f, 280.f);
 }
 
 void TutorialState::initFields()
@@ -46,14 +55,13 @@ void TutorialState::initFields()
 	}
 
 	tutorialStage = 1;
-	vecTexts.resize(7);
+	vecTexts.resize(6);
 	vecTexts[0] = "";
-	vecTexts[1] = "After pressing 'New game' \na 9x9 board with diamonds of \ndiferent colors will be shown";
-	vecTexts[2] = "Your task is to line up \ndiamonds of the same color \nby swapping two adjacent diamonds \nto create at least a string of 3 or more \ndiamonds in the same color";
-	vecTexts[3] = "When you place at least 3 diamonds, \nthey will be destroyed and \nnew diamonds will fall from above";
-	vecTexts[4] = "The more rows \nof diamonds you arrange, \nthe more points you get";
-	vecTexts[5] = "You have only 120 seconds for that. \nHurry up!";
-	vecTexts[6] = "";
+	vecTexts[1] = "After pressing 'New game' \na 9x9 board with diamonds of \ndifferent colors will be shown.";
+	vecTexts[2] = "Your task is to line up \ndiamonds of the same color \nby swapping two adjacent \ndiamonds to create at least a \nstring of 3 or more \ndiamonds in the same color.\n\n\n\n\n\t\t\t\t\t\t-->";
+	vecTexts[3] = "When you place at least 3 diamonds, \nthey will be destroyed and \nnew diamonds will fall from above.\n\n\nThe more rows \nof diamonds you arrange, \nthe more points you get!";
+	vecTexts[4] = "\t\t\tYou have only \n\t\t120 seconds for that. \n\n\n\t\t\t\tHurry up!";
+	vecTexts[5] = "";
 }
 
 void TutorialState::update()
@@ -94,9 +102,6 @@ void TutorialState::updateText()
 		text.setString(vecTexts[4]);
 		break;
 	case 5:
-		text.setString(vecTexts[5]);
-		break;
-	case 6:
 		this->endState();
 		break;
 	default:
@@ -113,6 +118,16 @@ void TutorialState::render(sf::RenderTarget* target)
 	
 	target->draw(this->background);
 	target->draw(this->text);
+
+	if (this->tutorialStage == 1)
+	{
+		target->draw(this->boardSprite);
+	}
+	else if (this->tutorialStage == 2)
+	{
+		target->draw(this->three1Sprite);
+		target->draw(this->three2Sprite);
+	}
 	renderBtns(*target);
 }
 
