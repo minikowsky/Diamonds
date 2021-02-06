@@ -60,7 +60,7 @@ void TutorialState::initFields()
 	vecTexts[1] = "After pressing 'New game' \na 9x9 board with diamonds of \ndifferent colors will be shown.";
 	vecTexts[2] = "Your task is to line up \ndiamonds of the same color \nby swapping two adjacent \ndiamonds to create at least a \nstring of 3 or more \ndiamonds in the same color.\n\n\n\n\n\t\t\t\t\t\t-->";
 	vecTexts[3] = "When you place at least 3 diamonds, \nthey will be destroyed and \nnew diamonds will fall from above.\n\n\nThe more rows \nof diamonds you arrange, \nthe more points you get!";
-	vecTexts[4] = "\t\t\tYou have only \n\t\t120 seconds for that. \n\n\n\t\t\t\tHurry up!";
+	vecTexts[4] = "\t\t\tYou have only \n\t\t60 seconds for that. \n\n\n\t\t\t\tHurry up!";
 	vecTexts[5] = "";
 }
 

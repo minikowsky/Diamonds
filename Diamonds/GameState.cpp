@@ -196,11 +196,11 @@ void GameState::updateTime()
 	if (!start) return;
 	this->remainingTime = "";
 	time = dtClock.getElapsedTime();
-	if (time.asSeconds() >= 120)
+	if (time.asSeconds() >= 60)
 	{
 		finish = true;
 	}
-	int currentTime = 120-static_cast<int>(this->time.asSeconds());
+	int currentTime = 60-static_cast<int>(this->time.asSeconds());
 	int minutes = currentTime / 60;
 	this->remainingTime += std::to_string(minutes);
 	this->remainingTime += ":";
