@@ -23,6 +23,8 @@ void App::initFields()
 void App::initWindow()
 {
 	this->window = new sf::RenderWindow(sf::VideoMode(500, 575), "Diamonds", sf::Style::Close | sf::Style::Titlebar);
+	icon.loadFromFile("Assets/yellow_idle.png");
+	this->window->setIcon(50, 50, icon.getPixelsPtr());
 	//icon.loadFromFile();
 	//this->window->setIcon(32, 32, icon.getPixelsPtr());
 }
